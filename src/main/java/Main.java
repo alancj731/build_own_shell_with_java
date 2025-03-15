@@ -45,6 +45,15 @@ public class Main {
                 if (arg.startsWith("~")) {
                     arg = System.getProperty("user.home") + arg.substring(1);
                 }
+                else if (arg.startsWith("..")){
+                    File file = new File(System.getProperty("user.dir"));
+                    File parent = file.getParentFile();
+                    arg = parent.getAbsolutePath() + arg.substring(2);
+                }
+                else if (arg.startsWith(".")){
+                    arg = System.getProperty("user.dir") + arg.substring(1);
+                }
+                
                 File file = new File(arg);
                 File absoluteFile = file.getCanonicalFile(); // Resolves ".." and other relative parts
                 
