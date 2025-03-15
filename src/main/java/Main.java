@@ -67,8 +67,8 @@ public class Main {
                 break;
             default:
                 String execPath = checkInPATH(command);
-                if(command =="custom_exe_8246"){
-                System.out.println(execPath);
+                if(command.startsWith("custom_exe")){
+                    System.out.println(execPath);
                 }
                 if (execPath != "") {
                     String[] parts = execPath.split(":");
