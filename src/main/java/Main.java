@@ -27,7 +27,7 @@ public class Main {
                 System.exit(0);
                 break;
             case "echo":
-                String formatedArg = formatArg(arg);
+                String formatedArg = formatArg(arg)[0];
                 System.out.println(formatedArg);
                 break;
             case "type":
@@ -78,7 +78,7 @@ public class Main {
 
                         List<String> commandArgs = new ArrayList<>();
                         commandArgs.add(command);
-                        commandArgs.addAll(Arrays.asList(formatArg(arg).split(" ")));
+                        commandArgs.addAll(Arrays.asList(formatArg(arg, true)));
 
                         Process process = new ProcessBuilder(commandArgs).start();
                         String output = new String(process.getInputStream().readAllBytes());
@@ -112,7 +112,11 @@ public class Main {
         return new String[] { command, arg };
     }
 
-    private static String formatArg(String arg) {
+    private static String[] formatArg(String arg) {
+        return formatArg(arg, false);
+    }
+    
+    private static String[] formatArg(String arg, boolean command) {
         // String [] argArr = arg.split("\\s+");
         // if (argArr.length > 1) {
         // for (int i = 0; i < argArr.length; i++) {
@@ -129,11 +133,13 @@ public class Main {
         // }
         arg = arg.trim();
         String toReturn = "";
+        List<String> toReturnList = new ArrayList<>();
         String toProcess = "";
         int numOfSingle = 0;
         int numOfDouble = 0;
         for (int i = 0; i < arg.length(); i++) {
             boolean quotaion = false;
+            char c = arg.charAt(i);
             if (arg.charAt(i) == '\"') {
                 numOfDouble++;
                 quotaion = true;
@@ -144,6 +150,8 @@ public class Main {
             }
             if (quotaion && ((numOfDouble == 2) || (numOfSingle == 2))) {
                 toReturn += toProcess;
+                // toReturnList.add(c + "" + toProcess + c); 
+                toReturnList.add(toProcess);
                 toProcess = "";
                 numOfDouble = numOfDouble % 2;
                 numOfSingle = numOfSingle % 2;
@@ -153,6 +161,7 @@ public class Main {
             if (quotaion && (numOfDouble == 1 || numOfSingle == 1)) {
                 if (toProcess != "") {
                     toReturn += toProcess.replaceAll("\\s+", " ");
+                    toReturnList.add(toProcess);
                     toProcess = "";
                 }
                 continue;
@@ -162,7 +171,11 @@ public class Main {
         }
         if (toProcess != "") {
             toReturn += toProcess.trim().replaceAll("\\s+", " ");
+            toReturnList.add(toProcess);
         }
-        return toReturn;
+        if (!command) {
+            return new String[] {toReturn};
+        }
+        return toReturnList.toArray(new String[0]);
     }
 }
