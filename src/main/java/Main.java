@@ -82,7 +82,8 @@ public class Main {
 
                         Process process = new ProcessBuilder(commandArgs).start();
                         String output = new String(process.getInputStream().readAllBytes());
-                        System.out.println(output.replaceAll("\n", "").trim());
+                        System.out.println(output);
+                        // System.out.println(output.replaceAll("\n", "").trim());
                         break;
                     }
                 }
