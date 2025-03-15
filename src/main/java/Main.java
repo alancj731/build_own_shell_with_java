@@ -1,4 +1,5 @@
 import java.util.Scanner;
+import java.io.File;
 import java.util.Arrays;
 
 public class Main {
@@ -27,13 +28,29 @@ public class Main {
             case "type":
                 if(Arrays.asList(VALID_TYPES).contains(arg)){
                     System.out.println(arg + " is a shell builtin");
-                }else{
-                    System.out.println(arg + ": not found");
+                    break;
                 }
+                String foundPath = checkInPATH(arg);
+                if (foundPath != "") {
+                    System.out.println(arg + " is " + foundPath + "/" + arg);
+                    break;
+                }
+                System.out.println(arg + ": not found");
                 break;
             default:
                 System.out.println(input + ": command not found");
         }
+    }
+
+    private static String checkInPATH(String arg) {
+        String[] paths = System.getenv("PATH").split(":");
+        for (String path : paths) {
+            File file = new File(path + "/" + arg);
+            if (file.exists() && file.isFile() && file.canExecute()) {
+                return path;
+            }
+        }
+        return "";
     }
 
     private static String[] parseInput(String input) {
