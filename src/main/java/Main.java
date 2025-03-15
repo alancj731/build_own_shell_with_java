@@ -26,9 +26,9 @@ public class Main {
                 break;
             case "type":
                 if(Arrays.asList(VALID_TYPES).contains(arg)){
-                    System.out.println(command + " is a shell built-in");
+                    System.out.println(arg + " is a shell built-in");
                 }else{
-                    System.out.println(command + " command not found");
+                    System.out.println(arg + " command not found");
                 }
                 break;
             default:
