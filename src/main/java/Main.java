@@ -125,6 +125,6 @@ public class Main {
         else{
             return String.join(" ", arg.split("\\s+"));
         }
-./
+
     }
 }
