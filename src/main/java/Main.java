@@ -1,6 +1,9 @@
 import java.util.Scanner;
+import java.util.Arrays;
 
 public class Main {
+
+    static String[] VALID_TYPES = {"echo", "type", "exit"};
     public static void main(String[] args) throws Exception {
         while(true){
             System.out.print("$ ");
@@ -20,6 +23,13 @@ public class Main {
                 break;
             case "echo":
                 System.out.println(arg);
+                break;
+            case "type":
+                if(Arrays.asList(VALID_TYPES).contains(arg)){
+                    System.out.println(command + " is a shell built-in");
+                }else{
+                    System.out.println(command + " command not found");
+                }
                 break;
             default:
                 System.out.println(input + ": command not found");
