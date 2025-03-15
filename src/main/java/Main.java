@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Main {
 
-    static String[] VALID_TYPES = {"echo", "type", "exit"};
+    static String[] VALID_TYPES = {"echo", "type", "exit", "pwd"};
     public static void main(String[] args) throws Exception {
         while(true){
             System.out.print("$ ");
