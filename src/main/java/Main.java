@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Main {
 
-    static String[] VALID_TYPES = {"echo", "type", "exit", "pwd"};
+    static String[] VALID_TYPES = {"echo", "type", "exit", "pwd", "cd"};
     public static void main(String[] args) throws Exception {
         while(true){
             System.out.print("$ ");
@@ -40,6 +40,19 @@ public class Main {
                 break;
             case "pwd":
                 System.out.println(System.getProperty("user.dir"));
+                break;
+            case "cd":
+                if (arg.startsWith("~")) {
+                    arg = System.getProperty("user.home") + arg.substring(1);
+                }
+                File file = new File(arg);
+                File absoluteFile = file.getCanonicalFile(); // Resolves ".." and other relative parts
+                
+                if (absoluteFile.exists() && absoluteFile.isDirectory()) {
+                    System.setProperty("user.dir", absoluteFile.getPath());
+                    break;
+                }
+                System.out.println("cd: " + arg + ": No such file or directory");
                 break;
             default:
                 String execPath = checkInPATH(command);
