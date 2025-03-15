@@ -1,6 +1,7 @@
 import java.util.Scanner;
 import java.io.File;
 import java.util.Arrays;
+import java.util.List;
 
 public class Main {
 
@@ -32,12 +33,25 @@ public class Main {
                 }
                 String foundPath = checkInPATH(arg);
                 if (foundPath != "") {
-                    System.out.println(arg + " is " + foundPath + "/" + arg);
+                    System.out.println(arg + " is " + foundPath.split(":")[0] + "/" + arg);
                     break;
                 }
                 System.out.println(arg + ": not found");
                 break;
             default:
+                String execPath = checkInPATH(command);
+                System.out.println("execPath:" + execPath);
+                if (execPath != "") {
+                    String [] parts = execPath.split(":");
+                    System.out.println("parts:" + parts);
+                    if (parts[1].equals("executable"))
+                    {
+                        Process process = new ProcessBuilder(List.of(input.split(" "))).start();
+                        String output = new String(process.getInputStream().readAllBytes());
+                        System.out.println(output);
+                        break;
+                    }
+                }
                 System.out.println(input + ": command not found");
         }
     }
@@ -47,7 +61,14 @@ public class Main {
         for (String path : paths) {
             File file = new File(path + "/" + arg);
             if (file.exists() && file.isFile()) {
-                return path;
+                if (file.canExecute())
+                {
+                    return path + ":executable";
+                }
+                else
+                {
+                    return path + ":non_executable";
+                }
             }
         }
         return "";
