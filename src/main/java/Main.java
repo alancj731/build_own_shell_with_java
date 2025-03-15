@@ -75,9 +75,9 @@ public class Main {
                         // Process process = new ProcessBuilder(List.of(argsArray)).start();
 
                         System.out.println(command + " " + formatArg(arg));
-                        System.out.println(List.of(command + " " + formatArg(arg)).split(" "));
-                        
-                        Process process = new ProcessBuilder(List.of(command + " " + formatArg(arg)).split(" ")).start();
+                        System.out.println(List.of((command + " " + formatArg(arg)).split(" ")));
+
+                        Process process = new ProcessBuilder(List.of((command + " " + formatArg(arg)).split(" "))).start();
                         String output = new String(process.getInputStream().readAllBytes());
                         System.out.println(output.trim());
                         break;
