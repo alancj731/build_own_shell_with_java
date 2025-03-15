@@ -80,19 +80,9 @@ public class Main {
                         // }
 
                         Process process = new ProcessBuilder(commandArgs).start();
-                        String output = new String(process.getInputStream().readAllBytes());
-                        // System.out.println(output);
-                        
-                        if(command.startsWith("custom_exe")){
-                            System.out.print(output);
-                            break;
-                        }
-                        else{
+                        String output = new String(process.getInputStream().readAllBytes());                        
+                        System.out.print(output);
 
-                            // System.out.println(output.replaceAll("\n", "").trim());
-                            System.out.print(output);
-                            break;
-                        }
                     }
                 }
                 System.out.println(input + ": command not found");
