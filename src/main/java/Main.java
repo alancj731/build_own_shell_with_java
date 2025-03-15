@@ -67,15 +67,12 @@ public class Main {
                 break;
             default:
                 String execPath = checkInPATH(command);
+                if(command =="custom_exe_8246"){
+                System.out.println(execPath);
+                }
                 if (execPath != "") {
                     String[] parts = execPath.split(":");
                     if (parts[1].equals("executable")) {
-                        // String [] argsArray = input.split(" ");
-                        // for (int i = 0; i < argsArray.length; i++) {
-                        // argsArray[i] = argsArray[i].trim().replaceAll("\"", "").replaceAll("'", "");
-                        // }
-                        // Process process = new ProcessBuilder(List.of(argsArray)).start();
-
                         List<String> commandArgs = new ArrayList<>();
                         commandArgs.add(command);
                         commandArgs.addAll(Arrays.asList(formatArg(arg, true)));
