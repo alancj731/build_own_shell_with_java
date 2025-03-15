@@ -23,7 +23,6 @@ public class Main {
     public static void handleCommand(String command, String arg, String input, Scanner scanner) throws Exception {
         switch (command) {
             case "exit":
-                scanner.close();
                 System.exit(0);
                 break;
             case "echo":
@@ -85,12 +84,12 @@ public class Main {
                         // System.out.println(output);
                         
                         if(command.startsWith("custom_exe")){
-                            System.out.println(output);
+                            System.out.print(output);
                             break;
                         }
                         else{
 
-                            System.out.println(output.replaceAll("\n", "").trim());
+                            System.out.print(output.replaceAll("\n", "").trim());
                             break;
                         }
                     }
