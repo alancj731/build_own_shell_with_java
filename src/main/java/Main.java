@@ -86,13 +86,13 @@ public class Main {
                         
                         if(command.startsWith("custom_exe")){
                             System.out.println(output);
+                            break;
                         }
                         else{
 
                             System.out.println(output.replaceAll("\n", "").trim());
+                            break;
                         }
-
-                        break;
                     }
                 }
                 System.out.println(input + ": command not found");
