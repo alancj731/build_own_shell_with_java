@@ -67,15 +67,18 @@ public class Main {
                 break;
             default:
                 String execPath = checkInPATH(command);
-                if(command.startsWith("custom_exe")){
-                    System.out.println(execPath);
-                }
                 if (execPath != "") {
                     String[] parts = execPath.split(":");
                     if (parts[1].equals("executable")) {
                         List<String> commandArgs = new ArrayList<>();
                         commandArgs.add(command);
                         commandArgs.addAll(Arrays.asList(formatArg(arg, true)));
+                        if(command.startsWith("custom_exe")){
+                            System.out.println("command:");
+                            System.out.println(commandArgs.get(0));
+                            System.out.println("args:");
+                            System.out.println(commandArgs.get(1));
+                        }
 
                         Process process = new ProcessBuilder(commandArgs).start();
                         String output = new String(process.getInputStream().readAllBytes());
