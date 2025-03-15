@@ -73,7 +73,7 @@ public class Main {
                         // argsArray[i] = argsArray[i].trim().replaceAll("\"", "").replaceAll("'", "");
                         // }
                         // Process process = new ProcessBuilder(List.of(argsArray)).start();
-                        Process process = new ProcessBuilder(formatArg(input).split(" "))
+                        Process process = new ProcessBuilder((command + " " + formatArg(arg)).split(" "))
                                 .start();
                         String output = new String(process.getInputStream().readAllBytes());
                         System.out.println(output.trim());
