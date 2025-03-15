@@ -7,12 +7,22 @@ public class Main {
             Scanner scanner = new Scanner(System.in);
             String input = scanner.nextLine();
             String[] parts = parseInput(input);
-            String command = parts[0];
-            String arg = parts[1];
-            if (command.equals("exit")) {
+            String command = parts[0].trim();
+            String arg = parts[1].trim();
+            handleCommand(command, arg, input);
+        }
+    }
+
+    public static void handleCommand(String command, String arg, String input) throws Exception {
+        switch (command) {
+            case "exit":
+                System.exit(0);
                 break;
-            }
-            System.out.println(input + ": command not found");
+            case "echo":
+                System.out.println(arg);
+                break;
+            default:
+                System.out.println(input + ": command not found");
         }
     }
 
