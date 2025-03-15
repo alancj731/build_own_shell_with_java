@@ -1,5 +1,6 @@
 import java.util.Scanner;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -15,13 +16,14 @@ public class Main {
             String[] parts = parseInput(input);
             String command = parts[0].trim();
             String arg = parts[1].trim();
-            handleCommand(command, arg, input);
+            handleCommand(command, arg, input, scanner);
         }
     }
 
-    public static void handleCommand(String command, String arg, String input) throws Exception {
+    public static void handleCommand(String command, String arg, String input, Scanner scanner) throws Exception {
         switch (command) {
             case "exit":
+                scanner.close();
                 System.exit(0);
                 break;
             case "echo":
@@ -74,12 +76,13 @@ public class Main {
                         // }
                         // Process process = new ProcessBuilder(List.of(argsArray)).start();
 
-                        System.out.println(command + " " + formatArg(arg));
-                        System.out.println(List.of((command + " " + formatArg(arg)).split(" ")));
+                        List<String> commandArgs = new ArrayList<>();
+                        commandArgs.add(command);
+                        commandArgs.addAll(Arrays.asList(formatArg(arg).split(" ")));
 
-                        Process process = new ProcessBuilder(List.of((command + " " + formatArg(arg)).split(" "))).start();
+                        Process process = new ProcessBuilder(commandArgs).start();
                         String output = new String(process.getInputStream().readAllBytes());
-                        System.out.println(output.trim());
+                        System.out.println(output.replaceAll("\n", "").trim());
                         break;
                     }
                 }
