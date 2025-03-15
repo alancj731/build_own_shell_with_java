@@ -38,6 +38,9 @@ public class Main {
                 }
                 System.out.println(arg + ": not found");
                 break;
+            case "pwd":
+                System.out.println(System.getProperty("user.dir"));
+                break;
             default:
                 String execPath = checkInPATH(command);
                 if (execPath != "") {
