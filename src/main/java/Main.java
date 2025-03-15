@@ -24,7 +24,8 @@ public class Main {
                 System.exit(0);
                 break;
             case "echo":
-                System.out.println(arg);
+                String formatedArg = formatArg(arg);
+                System.out.println(formatedArg);
                 break;
             case "type":
                 if(Arrays.asList(VALID_TYPES).contains(arg)){
@@ -68,8 +69,12 @@ public class Main {
                 if (execPath != "") {
                     String [] parts = execPath.split(":");
                     if (parts[1].equals("executable"))
-                    {
-                        Process process = new ProcessBuilder(List.of(input.split(" "))).start();
+                    {   
+                        String [] argsArray = input.split(" ");
+                        for (int i = 0; i < argsArray.length; i++) {
+                            argsArray[i] = argsArray[i].replaceAll("\"", "").replaceAll("'", "");
+                        }
+                        Process process = new ProcessBuilder(List.of(argsArray)).start();
                         String output = new String(process.getInputStream().readAllBytes());
                         System.out.println(output.trim());
                         break;
@@ -102,5 +107,9 @@ public class Main {
         String command = parts.length > 0 ? parts[0] : "";
         String arg = parts.length > 1 ? parts[1] : "";
         return new String[]{command, arg};
+    }
+
+    private static String formatArg(String arg) {
+        return arg.replaceAll("\"", "").replaceAll("'", "");
     }
 }
