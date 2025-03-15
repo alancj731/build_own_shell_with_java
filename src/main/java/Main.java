@@ -46,7 +46,7 @@ public class Main {
                     {
                         Process process = new ProcessBuilder(List.of(input.split(" "))).start();
                         String output = new String(process.getInputStream().readAllBytes());
-                        System.out.println(output);
+                        System.out.println(output.trim());
                         break;
                     }
                 }
