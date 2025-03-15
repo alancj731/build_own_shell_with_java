@@ -119,7 +119,12 @@ public class Main {
         //     String toReturn = String.join(" ", argArr);
         //     return toReturn;
         // }
-
-        return arg.replaceAll("\"", "").replaceAll("'", "");
+        if (arg.contains("\"") || arg.contains("'")) {
+            return arg.replaceAll("\"", "").replaceAll("'", "");
+        }
+        else{
+            return String.join(" ", arg.split("\\s+"));
+        }
+./
     }
 }
