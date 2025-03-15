@@ -73,12 +73,12 @@ public class Main {
                         List<String> commandArgs = new ArrayList<>();
                         commandArgs.add(command);
                         commandArgs.addAll(Arrays.asList(formatArg(arg, true)));
-                        if(command.startsWith("custom_exe")){
-                            System.out.println("command:");
-                            System.out.println(commandArgs.get(0));
-                            System.out.println("args:");
-                            System.out.println(commandArgs.get(1));
-                        }
+                        // if(command.startsWith("custom_exe")){
+                        //     System.out.println("command:");
+                        //     System.out.println(commandArgs.get(0));
+                        //     System.out.println("args:");
+                        //     System.out.println(commandArgs.get(1));
+                        // }
 
                         Process process = new ProcessBuilder(commandArgs).start();
                         String output = new String(process.getInputStream().readAllBytes());
