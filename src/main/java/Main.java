@@ -46,7 +46,7 @@ public class Main {
         String[] paths = System.getenv("PATH").split(":");
         for (String path : paths) {
             File file = new File(path + "/" + arg);
-            if (file.exists() && file.isFile() && file.canExecute()) {
+            if (file.exists() && file.isFile()) {
                 return path;
             }
         }
