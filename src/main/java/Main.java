@@ -40,10 +40,8 @@ public class Main {
                 break;
             default:
                 String execPath = checkInPATH(command);
-                System.out.println("execPath:" + execPath);
                 if (execPath != "") {
                     String [] parts = execPath.split(":");
-                    System.out.println("parts:" + parts);
                     if (parts[1].equals("executable"))
                     {
                         Process process = new ProcessBuilder(List.of(input.split(" "))).start();
