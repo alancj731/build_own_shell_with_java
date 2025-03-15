@@ -43,7 +43,7 @@ public class Main {
                 break;
             case "cd":
                 if (arg.startsWith("~")) {
-                    arg = System.getProperty("user.home") + arg.substring(1);
+                    arg = System.getenv("HOME") + arg.substring(1);
                 }
                 else if (arg.startsWith("..")){
                     File file = new File(System.getProperty("user.dir"));
