@@ -89,7 +89,8 @@ public class Main {
                         }
                         else{
 
-                            System.out.print(output.replaceAll("\n", "").trim());
+                            // System.out.println(output.replaceAll("\n", "").trim());
+                            System.out.print(output);
                             break;
                         }
                     }
