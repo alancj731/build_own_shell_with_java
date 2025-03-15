@@ -70,11 +70,12 @@ public class Main {
                     String [] parts = execPath.split(":");
                     if (parts[1].equals("executable"))
                     {   
-                        String [] argsArray = input.split(" ");
-                        for (int i = 0; i < argsArray.length; i++) {
-                            argsArray[i] = argsArray[i].replaceAll("\"", "").replaceAll("'", "");
-                        }
-                        Process process = new ProcessBuilder(List.of(argsArray)).start();
+                        // String [] argsArray = input.split(" ");
+                        // for (int i = 0; i < argsArray.length; i++) {
+                        //     argsArray[i] = argsArray[i].trim().replaceAll("\"", "").replaceAll("'", "");
+                        // }
+                        // Process process = new ProcessBuilder(List.of(argsArray)).start();
+                        Process process = new ProcessBuilder(input.replaceAll("\"", "").replaceAll("'", "").split(" ")).start();
                         String output = new String(process.getInputStream().readAllBytes());
                         System.out.println(output.trim());
                         break;
@@ -110,6 +111,15 @@ public class Main {
     }
 
     private static String formatArg(String arg) {
+        // String [] argArr = arg.split("\\s+");
+        // if (argArr.length > 1) {
+        //     for (int i = 0; i < argArr.length; i++) {
+        //         argArr[i] = argArr[i].trim().replaceAll("\"", "").replaceAll("'", "");
+        //     }
+        //     String toReturn = String.join(" ", argArr);
+        //     return toReturn;
+        // }
+
         return arg.replaceAll("\"", "").replaceAll("'", "");
     }
 }
