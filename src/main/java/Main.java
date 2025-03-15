@@ -137,7 +137,7 @@ public class Main {
                 quotaion = true;
             }
             if (quotaion && ((numOfDouble == 2) || (numOfSingle == 2))) {
-                toReturn += toProcess + " ";
+                toReturn += toProcess;
                 toProcess = "";
                 numOfDouble = numOfDouble % 2;
                 numOfSingle = numOfSingle % 2;
