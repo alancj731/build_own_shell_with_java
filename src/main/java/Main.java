@@ -146,7 +146,7 @@ public class Main {
 
             if (quotaion && (numOfDouble == 1 || numOfSingle == 1)) {
                 if (toProcess != "") {
-                    toReturn += toProcess.trim().replaceAll("\\s+", " ");
+                    toReturn += toProcess.replaceAll("\\s+", " ");
                     toProcess = "";
                 }
                 continue;
