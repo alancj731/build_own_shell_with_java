@@ -111,7 +111,7 @@ public class Main {
             File file = new File(path + arg );
 
             if (file.exists() && file.isFile()) {
-                System.out.println("Found " + arg + " in " + path);
+                // System.out.println("Found " + arg + " in " + path);
                 if (file.canExecute()) {
                     return path + ":executable";
                 } else {
