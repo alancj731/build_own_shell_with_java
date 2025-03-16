@@ -27,7 +27,7 @@ public class Main {
 
     private static void handleRedirect(String content, String redirect) {
         if (redirect.equals("")) {
-            System.out.println(content);
+            System.out.print(content);
             return;
         } else {
             try (FileWriter writer = new FileWriter(redirect)) {
@@ -104,7 +104,6 @@ public class Main {
 
                         commandArgs.addAll(argsList);
                         
-
                         Process process = new ProcessBuilder(commandArgs).start();
                         String output = new String(process.getInputStream().readAllBytes());
                         // System.out.print(output);
