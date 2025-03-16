@@ -14,7 +14,7 @@ public class Main {
         while (true) {
             System.out.print("$ ");
             Scanner scanner = new Scanner(System.in);
-            String input = scanner.nextLine();
+            String input = scanner.nextLine().trim();
             String[] parts = parseInput(input);
             String command = parts[0].trim();
             String arg = parts[1].trim();
@@ -75,7 +75,7 @@ public class Main {
                         commandArgs.add(command);
 
                         String[] result = formatArg(arg, true);
-
+                        
                         List<String> argsList = Arrays.asList(result);
 
                         // Remove quotes
@@ -115,9 +115,22 @@ public class Main {
     }
 
     private static String[] parseInput(String input) {
-        String[] parts = input.split(" ", 2);
-        String command = parts.length > 0 ? parts[0] : "";
-        String arg = parts.length > 1 ? parts[1] : "";
+        String start = input.substring(0, 1);
+
+        String command = "";
+        String arg = "";
+        if (start.equals("'") || start.equals("\"")) {
+            String[] total = formatArg(input, true);
+            command = total[0].trim();
+            // arg = String.join(" ", Arrays.copyOfRange(total, 1, total.length));
+            arg = input.split(command)[1].substring(1, input.split(command)[1].length());
+        }
+        else{
+            String[] parts = input.split(" ", 2);
+            command = parts.length > 0 ? parts[0] : "";
+            arg = parts.length > 1 ? parts[1] : "";
+        }
+
         return new String[] { command, arg };
     }
 
