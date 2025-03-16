@@ -8,7 +8,7 @@ import java.util.List;
 public class Main {
 
     static String[] VALID_TYPES = { "echo", "type", "exit", "pwd", "cd" };
-    static char[] ESCAPE_CHARS = { '\"', '\\', '$', 'n' };
+    static char[] ESCAPE_CHARS = { '\"', '\\'};
 
     public static void main(String[] args) throws Exception {
         while (true) {
@@ -83,9 +83,9 @@ public class Main {
                         //         .map(s -> s.replace("'", ""))
                         //         .collect(Collectors.toList());
 
-                        // if(input.startsWith("cat \"")){
-                        //     System.out.print(argsList);
-                        // }
+                        if(input.startsWith("cat \"")){
+                            System.out.print(argsList);
+                        }
 
                         commandArgs.addAll(argsList);
 
