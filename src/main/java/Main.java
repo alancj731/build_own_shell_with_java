@@ -119,7 +119,7 @@ public class Main {
         String mode = "";
         for (int i = 0; i < arg.length(); i++) {
             char c = arg.charAt(i);
-            if (c == '\\') {
+            if (c == '\\' && mode !="single") {
                 i += 1;
                 toProcess = addCurrentToProcess(toProcess, arg.charAt(i), mode);
                 continue;
