@@ -100,6 +100,7 @@ public class Main {
     }
 
     private static String checkInPATH(String arg) {
+        System.out.println("check in path touched");
         String[] paths = System.getenv("PATH").split(":");
         for (String path : paths) {
             File file = new File(path + "/" + arg);
