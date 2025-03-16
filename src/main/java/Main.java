@@ -107,6 +107,21 @@ public class Main {
             if (!path.endsWith("/")) {
                 path += "/";
             }
+
+            File directory = new File(path);
+            if (directory.isDirectory()) {
+                // List all files in the directory
+                File[] files = directory.listFiles();
+    
+                if (files != null) {
+                    for (File file : files) {
+                        if (file.isFile()) { // Check if it's a file (not a directory)
+                            System.out.println(file.getName());
+                        }
+                    }
+                }
+            }
+
             File file = new File(path + "\""  + arg + "\"" );
             System.out.println("File path: " + file.getPath());
             if (file.exists() && file.isFile()) {
