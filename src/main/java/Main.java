@@ -108,29 +108,9 @@ public class Main {
             if (!path.endsWith("/")) {
                 path += "/";
             }
-            System.out.println("path in PATH:"  +   path);
-
-            if (path.contains("tmp")) {
-                File directory = new File(path);
-                System.out.println("Directory: " + directory);
-                if (directory.isDirectory()) {
-                    // List all files in the directory
-                    File[] files = directory.listFiles();
-
-                    if (files != null) {
-                        for (File file : files) {
-                            if (file.isFile()) { // Check if it's a file (not a directory)
-                                System.out.println(file.getPath());
-                            }
-                        }
-                    }
-                }
-            }
-
 
             File file = new File(path + arg );
-            System.out.println("File path: " + file.getPath());
-            
+
             if (file.exists() && file.isFile()) {
                 System.out.println("Found " + arg + " in " + path);
                 if (file.canExecute()) {
@@ -152,12 +132,12 @@ public class Main {
         if (start.equals("'") || start.equals("\"")) {
             for (int i = 1; i < input.length(); i++) {
                 if (input.charAt(i) == start.charAt(0)) {
-                    command = formatArg(input.substring(1, i))[0];
+                    command = formatArg(input.substring(0, i))[0];
                     arg = input.substring(i + 1);
                     break;
                 }
             }
-            // System.out.println("Command: " + command);
+            System.out.println("Command: " + command);
             // System.out.println("Arg: " + arg);
         } else {
             String[] parts = input.split(" ", 2);
