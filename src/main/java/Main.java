@@ -127,8 +127,8 @@ public class Main {
                     break;
                 }
             }
-            // System.out.println("Command: " + command);
-            // System.out.println("Arg: " + arg);
+            System.out.println("Command: " + command);
+            System.out.println("Arg: " + arg);
         }
         else{
             String[] parts = input.split(" ", 2);
