@@ -1,6 +1,8 @@
 import java.util.Scanner;
 import java.util.stream.Collectors;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -18,33 +20,53 @@ public class Main {
             String[] parts = parseInput(input);
             String command = parts[0].trim();
             String arg = parts[1].trim();
-            handleCommand(command, arg, input, scanner);
+            String redirect = parts[2].trim();
+            handleCommand(command, arg, redirect, input, scanner);
         }
     }
 
-    public static void handleCommand(String command, String arg, String input, Scanner scanner) throws Exception {
+    private static void handleRedirect(String content, String redirect) {
+        if (redirect.equals("")) {
+            System.out.println(content);
+            return;
+        } else {
+            try (FileWriter writer = new FileWriter(redirect)) {
+                writer.write(content);
+            } catch (IOException e) {
+                System.err.println("Error saving content to file: " + e.getMessage());
+            }
+            return;
+        }
+    }
+
+    public static void handleCommand(String command, String arg, String redirect, String input, Scanner scanner)
+            throws Exception {
         switch (command) {
             case "exit":
                 System.exit(0);
                 break;
             case "echo":
                 String formatedArg = formatArg(arg)[0];
-                System.out.println(formatedArg);
+                handleRedirect(formatedArg, redirect);
                 break;
             case "type":
                 if (Arrays.asList(VALID_TYPES).contains(arg)) {
-                    System.out.println(arg + " is a shell builtin");
+                    // System.out.println(arg + " is a shell builtin");
+                    handleRedirect(arg + " is a shell builtin", redirect);
                     break;
                 }
                 String foundPath = checkInPATH(arg);
                 if (foundPath != "") {
-                    System.out.println(arg + " is " + foundPath.split(":")[0] + arg);
+                    // System.out.println(arg + " is " + foundPath.split(":")[0] + arg);
+                    handleRedirect(arg + " is " + foundPath.split(":")[0] + arg, redirect);
                     break;
                 }
-                System.out.println(arg + ": not found");
+                // System.out.println(arg + ": not found");
+                handleRedirect(arg + ": not found", redirect);
                 break;
             case "pwd":
                 System.out.println(System.getProperty("user.dir"));
+                handleRedirect(System.getProperty("user.dir"), redirect);
                 break;
             case "cd":
                 if (arg.startsWith("~")) {
@@ -64,7 +86,8 @@ public class Main {
                     System.setProperty("user.dir", absoluteFile.getPath());
                     break;
                 }
-                System.out.println("cd: " + arg + ": No such file or directory");
+                // System.out.println("cd: " + arg + ": No such file or directory");
+                handleRedirect("cd: " + arg + ": No such file or directory", redirect);
                 break;
             default:
                 String execPath = checkInPATH(command);
@@ -92,7 +115,8 @@ public class Main {
 
                         Process process = new ProcessBuilder(commandArgs).start();
                         String output = new String(process.getInputStream().readAllBytes());
-                        System.out.print(output);
+                        // System.out.print(output);
+                        handleRedirect(output, redirect);
                         break;
                     }
                 }
@@ -103,12 +127,12 @@ public class Main {
     private static String checkInPATH(String arg) {
         String[] paths = System.getenv("PATH").split(":");
         for (String path : paths) {
-            
+
             if (!path.endsWith("/")) {
                 path += "/";
             }
 
-            File file = new File(path + arg );
+            File file = new File(path + arg);
 
             if (file.exists() && file.isFile()) {
                 // System.out.println("Found " + arg + " in " + path);
@@ -126,12 +150,12 @@ public class Main {
         String start = input.substring(0, 1);
 
         String command = "";
-        String arg = "";
+        String rest = "";
         if (start.equals("'") || start.equals("\"")) {
             for (int i = 1; i < input.length(); i++) {
                 if (input.charAt(i) == start.charAt(0)) {
                     command = formatArg(input.substring(0, i))[0];
-                    arg = input.substring(i + 1);
+                    rest = input.substring(i + 1);
                     break;
                 }
             }
@@ -140,10 +164,18 @@ public class Main {
         } else {
             String[] parts = input.split(" ", 2);
             command = parts.length > 0 ? parts[0] : "";
-            arg = parts.length > 1 ? parts[1] : "";
+            rest = parts.length > 1 ? parts[1] : "";
         }
 
-        return new String[] { command, arg };
+        String[] parts = new String[] { rest, "" };
+        ;
+        if (input.contains("1>")) {
+            parts = rest.split("1>", 2);
+        } else if (input.contains(">")) {
+            parts = rest.split(">", 2);
+        }
+
+        return new String[] { command, parts[0], parts[1] };
     }
 
     private static String[] formatArg(String arg) {
