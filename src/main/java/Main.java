@@ -73,12 +73,17 @@ public class Main {
                         List<String> commandArgs = new ArrayList<>();
                         commandArgs.add(command);
 
-                        List<String> argsList = Arrays.asList(formatArg(arg, true));
+
+                        String[] result = formatArg(arg,true);
+                        System.out.println("result:" + result);
+
+                        List<String> argsList = Arrays.asList(result);
                         // Remove quotes and backslashes
                         argsList = argsList.stream()
                                 .map(s -> s.replace("\"", "").replace("\\", "")) 
                                 .collect(Collectors.toList());
 
+                        System.out.println(argsList);
 
                         commandArgs.addAll(argsList);
 
