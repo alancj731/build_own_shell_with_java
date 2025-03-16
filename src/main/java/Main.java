@@ -8,7 +8,7 @@ import java.util.List;
 public class Main {
 
     static String[] VALID_TYPES = { "echo", "type", "exit", "pwd", "cd" };
-    static char[] ESCAPE_CHARS = { '\"', '\\'};
+    static char[] ESCAPE_CHARS = { '\"', '\\' };
 
     public static void main(String[] args) throws Exception {
         while (true) {
@@ -68,7 +68,7 @@ public class Main {
                 break;
             default:
                 String execPath = checkInPATH(command);
-                System.out.println("execPath 71: " + execPath);    
+                System.out.println("execPath 71: " + execPath);
                 if (execPath != "") {
                     String[] parts = execPath.split(":");
                     if (parts[1].equals("executable")) {
@@ -76,16 +76,16 @@ public class Main {
                         commandArgs.add(command);
 
                         String[] result = formatArg(arg, true);
-                        
+
                         List<String> argsList = Arrays.asList(result);
 
                         // Remove quotes
                         // List<String> argsList = Arrays.stream(result)
-                        //         .map(s -> s.replace("'", ""))
-                        //         .collect(Collectors.toList());
+                        // .map(s -> s.replace("'", ""))
+                        // .collect(Collectors.toList());
 
                         // if(input.startsWith("cat \"")){
-                        //     System.out.print(argsList);
+                        // System.out.print(argsList);
                         // }
 
                         commandArgs.addAll(argsList);
@@ -104,25 +104,28 @@ public class Main {
         System.out.println("check in path touched");
         String[] paths = System.getenv("PATH").split(":");
         for (String path : paths) {
-            if (!path.endsWith("/")) {
-                path += "/";
-            }
 
-            File directory = new File(path);
-            if (directory.isDirectory()) {
-                // List all files in the directory
-                File[] files = directory.listFiles();
-    
-                if (files != null) {
-                    for (File file : files) {
-                        if (file.isFile()) { // Check if it's a file (not a directory)
-                            System.out.println(file.getName());
+            if (path.contains("tmp/quz")) {
+                File directory = new File(path);
+                if (directory.isDirectory()) {
+                    // List all files in the directory
+                    File[] files = directory.listFiles();
+
+                    if (files != null) {
+                        for (File file : files) {
+                            if (file.isFile()) { // Check if it's a file (not a directory)
+                                System.out.println(file.getPath());
+                            }
                         }
                     }
                 }
             }
 
-            File file = new File(path + "\""  + arg + "\"" );
+            if (!path.endsWith("/")) {
+                path += "/";
+            }
+
+            File file = new File(path + "\"" + arg + "\"");
             System.out.println("File path: " + file.getPath());
             if (file.exists() && file.isFile()) {
                 System.out.println("Found " + arg + " in " + path);
@@ -152,8 +155,7 @@ public class Main {
             }
             // System.out.println("Command: " + command);
             // System.out.println("Arg: " + arg);
-        }
-        else{
+        } else {
             String[] parts = input.split(" ", 2);
             command = parts.length > 0 ? parts[0] : "";
             arg = parts.length > 1 ? parts[1] : "";
@@ -244,7 +246,7 @@ public class Main {
                         }
                         case '\\': {
                             String toEscape = needEscape(arg, i);
-                            if ( toEscape != "") {
+                            if (toEscape != "") {
                                 i += 1;
                                 c = arg.charAt(i);
                                 toProcess = addCurrentToProcess(toProcess, c, mode);
