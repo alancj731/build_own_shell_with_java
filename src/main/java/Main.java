@@ -116,57 +116,59 @@ public class Main {
     }
     
     private static String[] formatArg(String arg, boolean command) {
-        // String [] argArr = arg.split("\\s+");
-        // if (argArr.length > 1) {
-        // for (int i = 0; i < argArr.length; i++) {
-        // argArr[i] = argArr[i].trim().replaceAll("\"", "").replaceAll("'", "");
-        // }
-        // String toReturn = String.join(" ", argArr);
-        // return toReturn;
-        // }
-        // if (arg.contains("\"") || arg.contains("'")) {
-        // return arg.replaceAll("\"", "").replaceAll("'", "");
-        // }
-        // else{
-        // return String.join(" ", arg.split("\\s+"));
-        // }
         arg = arg.trim();
         String toReturn = "";
         List<String> toReturnList = new ArrayList<>();
         String toProcess = "";
         int numOfSingle = 0;
         int numOfDouble = 0;
+        String mode = "";
         for (int i = 0; i < arg.length(); i++) {
-            boolean quotaion = false;
             char c = arg.charAt(i);
-            if (arg.charAt(i) == '\"') {
+            if ( c == '\"') {
                 numOfDouble++;
-                quotaion = true;
-            }
-            if (arg.charAt(i) == '\'') {
-                numOfSingle++;
-                quotaion = true;
-            }
-            if (quotaion && ((numOfDouble == 2) || (numOfSingle == 2))) {
-                toReturn += toProcess;
-                // toReturnList.add(c + "" + toProcess + c); 
-                toReturnList.add(toProcess);
-                toProcess = "";
-                numOfDouble = numOfDouble % 2;
-                numOfSingle = numOfSingle % 2;
-                continue;
-            }
-
-            if (quotaion && (numOfDouble == 1 || numOfSingle == 1)) {
-                if (toProcess != "") {
-                    toReturn += toProcess.replaceAll("\\s+", " ");
+                if (numOfDouble == 1) {
+                    mode = "double";
+                    if (toProcess != "") {
+                        toReturn += toProcess.trim().replaceAll("\\s+", " ");
+                        toReturnList.add(toProcess);
+                        toProcess = "";
+                    }
+                    continue;
+                }
+                else{ // numOfDouble == 2
+                    mode = "";
+                    toReturn += toProcess;
                     toReturnList.add(toProcess);
                     toProcess = "";
+                    continue;
                 }
-                continue;
             }
-
-            toProcess += arg.charAt(i);
+            if (c == '\'') {
+                if( mode == "double"){
+                    toProcess += c;
+                    continue;
+                }
+                numOfSingle++;
+                if( numOfSingle == 1){
+                    mode = "single";
+                    if (toProcess != "") {
+                        toReturn += toProcess.trim().replaceAll("\\s+", " ");
+                        toReturnList.add(toProcess);
+                        toProcess = "";
+                    }
+                    continue;
+                }
+                else{ // numOfSingle == 2
+                    mode = "";
+                    toReturn += toProcess;
+                    toReturnList.add(toProcess);
+                    toProcess = "";
+                    continue;
+                }
+            }
+            
+            toProcess += c;
         }
         if (toProcess != "") {
             toReturn += toProcess.trim().replaceAll("\\s+", " ");
