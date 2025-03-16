@@ -95,7 +95,7 @@ public class Main {
                         break;
                     }
                 }
-                System.out.print(input + ": command not found");
+                System.out.println(input + ": command not found");
         }
     }
 
