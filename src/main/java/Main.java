@@ -82,7 +82,9 @@ public class Main {
                         //       .map(s -> s.replace("\"", ""))
                         //       .collect(Collectors.toList());
          
-                        System.out.print("argList:" + argsList);
+                        if(!input.startsWith("cat '")){
+                            System.out.print("argList:" + argsList);
+                        }
 
                         commandArgs.addAll(argsList);
 
