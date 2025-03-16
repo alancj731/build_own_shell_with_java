@@ -72,15 +72,9 @@ public class Main {
                         List<String> commandArgs = new ArrayList<>();
                         commandArgs.add(command);
                         commandArgs.addAll(Arrays.asList(formatArg(arg, true)));
-                        // if(command.startsWith("custom_exe")){
-                        //     System.out.println("command:");
-                        //     System.out.println(commandArgs.get(0));
-                        //     System.out.println("args:");
-                        //     System.out.println(commandArgs.get(1));
-                        // }
 
                         Process process = new ProcessBuilder(commandArgs).start();
-                        String output = new String(process.getInputStream().readAllBytes());                        
+                        String output = new String(process.getInputStream().readAllBytes());
                         System.out.print(output);
                         break;
                     }
@@ -114,7 +108,7 @@ public class Main {
     private static String[] formatArg(String arg) {
         return formatArg(arg, false);
     }
-    
+
     private static String[] formatArg(String arg, boolean command) {
         arg = arg.trim();
         String toReturn = "";
@@ -125,13 +119,12 @@ public class Main {
         String mode = "";
         for (int i = 0; i < arg.length(); i++) {
             char c = arg.charAt(i);
-            if(c == '\\'){
-                toProcess += c;
+            if (c == '\\') {
                 i += 1;
-                toProcess += arg.charAt(i);
+                toProcess = addCurrentToProcess(toProcess, arg.charAt(i), mode);
                 continue;
             }
-            if ( c == '\"') {
+            if (c == '\"') {
                 if (mode == "single") {
                     toProcess += c;
                     continue;
@@ -140,18 +133,19 @@ public class Main {
                 if (numOfDouble == 1) {
                     mode = "double";
                     if (toProcess != "") {
-                        String toAdd = handleBackslash(toProcess.replaceAll("\\s+", " "));
-                        toReturn += toAdd;
-                        toReturnList.add(toAdd);
+                        // String toAdd = handleBackslash(toProcess.replaceAll("\\s+", " "));
+                        toReturn += toProcess;
+                        toReturnList.add(toProcess);
                         toProcess = "";
                     }
                     continue;
-                }
-                else{ // numOfDouble == 2
+                } else { // numOfDouble == 2
                     mode = "";
                     numOfDouble = 0;
-                    toReturn += handleBackslash(toProcess);
-                    toReturnList.add(handleBackslash(toProcess));
+                    // toReturn += handleBackslash(toProcess);
+                    // toReturnList.add(handleBackslash(toProcess));
+                    toReturn += toProcess;
+                    toReturnList.add(toProcess);
                     toProcess = "";
                     continue;
                 }
@@ -161,45 +155,56 @@ public class Main {
                     toProcess += c;
                     continue;
                 }
-                if( mode == "double"){
-                    toProcess += c;
-                    continue;
-                }
                 numOfSingle++;
-                if( numOfSingle == 1){
+                if (numOfSingle == 1) {
                     mode = "single";
                     if (toProcess != "") {
-                        String toAdd = handleBackslash(toProcess.replaceAll("\\s+", " "));
-                        toReturn += toAdd;
-                        toReturnList.add(toAdd);
+                        // String toAdd = handleBackslash(toProcess.replaceAll("\\s+", " "));
+                        toReturn += toProcess;
+                        toReturnList.add(toProcess);
                         toProcess = "";
                     }
                     continue;
-                }
-                else{ // numOfSingle == 2
+                } else { // numOfSingle == 2
                     mode = "";
                     numOfSingle = 0;
-                    toReturn += handleBackslash(toProcess);
-                    toReturnList.add(handleBackslash(toProcess));
+                    // toReturn += handleBackslash(toProcess);
+                    // toReturnList.add(handleBackslash(toProcess));
+                    toReturn += toProcess;
+                    toReturnList.add(toProcess);
                     toProcess = "";
                     continue;
                 }
             }
-            
-            toProcess += c;
+
+            toProcess = addCurrentToProcess(toProcess, c, mode);
         }
         if (toProcess != "") {
-            toReturn += handleBackslash(toProcess.trim().replaceAll("\\s+", " "));
-            toReturnList.add(handleBackslash(toProcess));
+            // toReturn += handleBackslash(toProcess.trim().replaceAll("\\s+", " "));
+            // toReturnList.add(handleBackslash(toProcess));
+            toReturn += toProcess;
+            toReturnList.add(toProcess);
         }
         if (!command) {
-            return new String[] {toReturn};
+            return new String[] { toReturn };
         }
         return toReturnList.toArray(new String[0]);
     }
 
     private static String handleBackslash(String text) {
-        return text.replaceAll("\\\\([^\\\\])", "$1") //  Remove \ before any non-\ character
-        .replaceAll("\\\\\\\\", "\\\\"); // Replace \\ with \
+        return text.replaceAll("\\\\([^\\\\])", "$1") // Remove \ before any non-\ character
+                .replaceAll("\\\\\\\\", "\\\\"); // Replace \\ with \
+    }
+
+    private static String addCurrentToProcess(String text, char c, String mode) {
+        if (mode == "") {
+            if (c == ' ' && text.length() > 0 && text.charAt(text.length() - 1) == c) {
+                return text;
+            } else {
+                return text + c;
+            }
+        } else {
+            return text + c;
+        }
     }
 }
