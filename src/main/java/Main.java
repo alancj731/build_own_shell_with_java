@@ -79,7 +79,7 @@ public class Main {
                         List<String> argsList = Arrays.asList(result);
                         // Remove quotes and backslashes
                         argsList = argsList.stream()
-                                .map(s -> s.replace("\"", "'").replace("\\", "")) 
+                                .map(s -> "'" + s.replace("\"", "").replace("\\", "") + "'") 
                                 .collect(Collectors.toList());
 
                         System.out.println(argsList);
