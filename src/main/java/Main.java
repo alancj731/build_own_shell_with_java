@@ -130,8 +130,9 @@ public class Main {
                 if (numOfDouble == 1) {
                     mode = "double";
                     if (toProcess != "") {
-                        toReturn += toProcess.trim().replaceAll("\\s+", " ");
-                        toReturnList.add(toProcess);
+                        String toAdd = toProcess.replaceAll("\\s+", " ");
+                        toReturn += toAdd;
+                        toReturnList.add(toAdd);
                         toProcess = "";
                     }
                     continue;
@@ -153,8 +154,9 @@ public class Main {
                 if( numOfSingle == 1){
                     mode = "single";
                     if (toProcess != "") {
-                        toReturn += toProcess.trim().replaceAll("\\s+", " ");
-                        toReturnList.add(toProcess);
+                        String toAdd = toProcess.replaceAll("\\s+", " ");
+                        toReturn += toAdd;
+                        toReturnList.add(toAdd);
                         toProcess = "";
                     }
                     continue;
