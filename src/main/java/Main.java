@@ -1,4 +1,5 @@
 import java.util.Scanner;
+import java.util.stream.Collectors;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -71,7 +72,15 @@ public class Main {
                     if (parts[1].equals("executable")) {
                         List<String> commandArgs = new ArrayList<>();
                         commandArgs.add(command);
-                        commandArgs.addAll(Arrays.asList(formatArg(arg, true)));
+
+                        List<String> argsList = Arrays.asList(formatArg(arg, true));
+                        // Remove quotes and backslashes
+                        argsList = argsList.stream()
+                                .map(s -> s.replace("\"", "").replace("\\", "")) 
+                                .collect(Collectors.toList());
+
+
+                        commandArgs.addAll(argsList);
 
                         Process process = new ProcessBuilder(commandArgs).start();
                         String output = new String(process.getInputStream().readAllBytes());
@@ -119,7 +128,7 @@ public class Main {
         String mode = "";
         for (int i = 0; i < arg.length(); i++) {
             char c = arg.charAt(i);
-            if (c == '\\' && mode !="single") {
+            if (c == '\\' && mode != "single") {
                 i += 1;
                 toProcess = addCurrentToProcess(toProcess, arg.charAt(i), mode);
                 continue;
@@ -127,18 +136,20 @@ public class Main {
             if (c == '\'') {
                 numOfSingle++;
                 if (mode != "") {
-                    if(numOfDouble > 0){
+                    if (numOfDouble > 0) {
                         toProcess += c;
                     }
-                    if (numOfSingle == 1){
+
+                    if (numOfSingle == 1) {
                         mode = "single";
-                    }
-                    else{
-                        numOfSingle = 0; //reset from 2 to 0
-                        if (numOfDouble == 1){
+                    } else {
+                        toReturn += toProcess;
+                        toReturnList.add(toProcess);
+                        toProcess = "";
+                        numOfSingle = 0; // reset from 2 to 0
+                        if (numOfDouble == 1) {
                             mode = "double";
-                        }
-                        else{
+                        } else {
                             mode = "";
                         }
                     }
@@ -190,7 +201,6 @@ public class Main {
                     continue;
                 }
             }
-            
 
             toProcess = addCurrentToProcess(toProcess, c, mode);
         }
@@ -203,6 +213,9 @@ public class Main {
         if (!command) {
             return new String[] { toReturn };
         }
+
+        toReturnList.replaceAll(String::trim);
+        toReturnList.removeIf(String::isEmpty);
         return toReturnList.toArray(new String[0]);
     }
 
