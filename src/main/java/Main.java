@@ -83,10 +83,6 @@ public class Main {
                         //         .map(s -> s.replace("'", ""))
                         //         .collect(Collectors.toList());
 
-                        if (!input.startsWith("cat '")) {
-                            System.out.print("argList:" + argsList);
-                        }
-
                         commandArgs.addAll(argsList);
 
                         Process process = new ProcessBuilder(commandArgs).start();
