@@ -68,6 +68,7 @@ public class Main {
                 break;
             default:
                 String execPath = checkInPATH(command);
+                System.out.println("execPath 71: " + execPath);    
                 if (execPath != "") {
                     String[] parts = execPath.split(":");
                     if (parts[1].equals("executable")) {
@@ -114,7 +115,7 @@ public class Main {
                     System.out.println("can execute");
                     return path + ":executable";
                 } else {
-                    return path + ":non_executable";
+                    return path + ":executable";
                 }
             }
         }
