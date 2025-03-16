@@ -8,6 +8,7 @@ import java.util.List;
 public class Main {
 
     static String[] VALID_TYPES = { "echo", "type", "exit", "pwd", "cd" };
+    static char[] ESCAPE_CHARS = { '\'', '\\', '$', 'n' };
 
     public static void main(String[] args) throws Exception {
         while (true) {
@@ -75,14 +76,14 @@ public class Main {
 
                         String[] result = formatArg(arg, true);
 
-                        // List<String> argsList = Arrays.asList(result);
+                        List<String> argsList = Arrays.asList(result);
 
                         // Remove quotes
-                        List<String> argsList = Arrays.stream(result)
-                              .map(s -> s.replace("'", ""))
-                              .collect(Collectors.toList());
-         
-                        if(!input.startsWith("cat '")){
+                        // List<String> argsList = Arrays.stream(result)
+                        //         .map(s -> s.replace("'", ""))
+                        //         .collect(Collectors.toList());
+
+                        if (!input.startsWith("cat '")) {
                             System.out.print("argList:" + argsList);
                         }
 
@@ -122,6 +123,19 @@ public class Main {
 
     private static String[] formatArg(String arg) {
         return formatArg(arg, false);
+    }
+
+    private static boolean needEscape(String text, int curIndex) {
+        if (curIndex >= text.length() - 1) {
+            return false;
+        }
+        char nextChar = text.charAt(curIndex + 1);
+        for (char c : ESCAPE_CHARS) {
+            if (c == nextChar) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private static String[] formatArg(String arg, boolean command) {
@@ -188,9 +202,14 @@ public class Main {
                             break;
                         }
                         case '\\': {
-                            i += 1;
-                            c = arg.charAt(i);
-                            toProcess = addCurrentToProcess(toProcess, c, mode);
+                            if (needEscape(arg, i)) {
+                                toProcess = addCurrentToProcess(toProcess, c, mode);
+                                i += 1;
+                                c = arg.charAt(i);
+                                toProcess = addCurrentToProcess(toProcess, c, mode);
+                            } else {
+                                toProcess = addCurrentToProcess(toProcess, c, mode);
+                            }
                             break;
                         }
                         default: {
@@ -229,10 +248,11 @@ public class Main {
 
             // if (numOfSingle == 1) {
             // mode = "single";
-    // private static String handleBackslash(String text) {
-    //     return text.replaceAll("\\\\([^\\\\])", "$1") // Remove \ before any non-\ character
-    //             .replaceAll("\\\\\\\\", "\\\\"); // Replace \\ with \
-    // }
+            // private static String handleBackslash(String text) {
+            // return text.replaceAll("\\\\([^\\\\])", "$1") // Remove \ before any non-\
+            // character
+            // .replaceAll("\\\\\\\\", "\\\\"); // Replace \\ with \
+            // }
             // mode = "";
             // }
             // }
