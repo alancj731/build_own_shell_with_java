@@ -127,7 +127,9 @@ public class Main {
             if (c == '\'') {
                 numOfSingle++;
                 if (mode != "") {
-                    toProcess += c;
+                    if(numOfDouble > 0){
+                        toProcess += c;
+                    }
                     if (numOfSingle == 1){
                         mode = "single";
                     }
