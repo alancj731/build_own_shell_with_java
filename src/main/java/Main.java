@@ -79,7 +79,7 @@ public class Main {
 
                         // Remove quotes
                         List<String> argsList = Arrays.stream(result)
-                              .map(s -> s.replace("'", "\""))
+                              .map(s -> s.replace("'", ""))
                               .collect(Collectors.toList());
          
                         if(!input.startsWith("cat '")){
