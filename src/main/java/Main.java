@@ -68,7 +68,7 @@ public class Main {
                 break;
             default:
                 String execPath = checkInPATH(command);
-                System.out.println("execPath 71: " + execPath);
+                // System.out.println("execPath 71: " + execPath);
                 if (execPath != "") {
                     String[] parts = execPath.split(":");
                     if (parts[1].equals("executable")) {
@@ -101,7 +101,6 @@ public class Main {
     }
 
     private static String checkInPATH(String arg) {
-        System.out.println("check in path touched");
         String[] paths = System.getenv("PATH").split(":");
         for (String path : paths) {
             
@@ -114,7 +113,6 @@ public class Main {
             if (file.exists() && file.isFile()) {
                 System.out.println("Found " + arg + " in " + path);
                 if (file.canExecute()) {
-                    System.out.println("can execute");
                     return path + ":executable";
                 } else {
                     return path + ":executable";
@@ -137,7 +135,7 @@ public class Main {
                     break;
                 }
             }
-            System.out.println("Command: " + command);
+            // System.out.println("Command: " + command);
             // System.out.println("Arg: " + arg);
         } else {
             String[] parts = input.split(" ", 2);
