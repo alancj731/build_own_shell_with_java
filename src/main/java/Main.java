@@ -105,8 +105,11 @@ public class Main {
         String[] paths = System.getenv("PATH").split(":");
         for (String path : paths) {
 
-            if (path.contains("tmp/quz")) {
+            System.out.println("path in PATH:"  +   path);
+
+            if (path.contains("quz")) {
                 File directory = new File(path);
+                System.out.println("Directory: " + directory);
                 if (directory.isDirectory()) {
                     // List all files in the directory
                     File[] files = directory.listFiles();
