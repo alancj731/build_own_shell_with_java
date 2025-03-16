@@ -136,7 +136,7 @@ public class Main {
                 if (numOfDouble == 1) {
                     mode = "double";
                     if (toProcess != "") {
-                        String toAdd = toProcess.replaceAll("\\s+", " ").replaceAll("\\", "");
+                        String toAdd = toProcess.replaceAll("\\s+", " ").replace("\\", "");
                         toReturn += toAdd;
                         toReturnList.add(toAdd);
                         toProcess = "";
@@ -161,7 +161,7 @@ public class Main {
                 if( numOfSingle == 1){
                     mode = "single";
                     if (toProcess != "") {
-                        String toAdd = toProcess.replaceAll("\\s+", " ").replaceAll("\\", "");
+                        String toAdd = toProcess.replaceAll("\\s+", " ").replace("\\", "");
                         toReturn += toAdd;
                         toReturnList.add(toAdd);
                         toProcess = "";
