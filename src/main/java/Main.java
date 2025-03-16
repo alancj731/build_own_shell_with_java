@@ -157,7 +157,7 @@ public class Main {
                         case '\\':
                             i += 1;
                             c = arg.charAt(i);
-                            toProcess = addCurrentToProcess(toProcess, c, mode);
+                            toProcess = addCurrentToProcess(toProcess, c, mode, true);
                             break;
                         default:
                             toProcess = addCurrentToProcess(toProcess, c, mode);
@@ -319,7 +319,11 @@ public class Main {
         return toReturnList.toArray(new String[0]);
     }
 
-    private static String addCurrentToProcess(String text, char c, String mode) {
+    private static String addCurrentToProcess(String text, char c, String mode, boolean escape) {
+        if (escape) {
+            return text + c;
+        }
+
         if (mode == "") {
             if (c == ' ' && text.length() > 0 && text.charAt(text.length() - 1) == c) {
                 return text;
@@ -329,5 +333,9 @@ public class Main {
         } else {
             return text + c;
         }
+    }
+
+    private static String addCurrentToProcess(String text, char c, String mode) {
+        return addCurrentToProcess(text, c, mode, false);
     }
 }
