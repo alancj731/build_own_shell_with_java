@@ -75,12 +75,12 @@ public class Main {
 
                         String[] result = formatArg(arg, true);
 
-                        List<String> argsList = Arrays.asList(result);
+                        // List<String> argsList = Arrays.asList(result);
 
                         // Remove quotes
-                        // List<String> argsList = Arrays.stream(result)
-                        //       .map(s -> s.replace("\"", ""))
-                        //       .collect(Collectors.toList());
+                        List<String> argsList = Arrays.stream(result)
+                              .map(s -> s.replace("'", "\""))
+                              .collect(Collectors.toList());
          
                         if(!input.startsWith("cat '")){
                             System.out.print("argList:" + argsList);
