@@ -82,7 +82,7 @@ public class Main {
                         //       .map(s -> s.replace("\"", ""))
                         //       .collect(Collectors.toList());
          
-                        // System.out.print(argsList);
+                        System.out.print("argList:" + argsList);
 
                         commandArgs.addAll(argsList);
 
