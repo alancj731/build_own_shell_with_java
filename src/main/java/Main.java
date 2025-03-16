@@ -125,7 +125,7 @@ public class Main {
         String mode = "";
         for (int i = 0; i < arg.length(); i++) {
             char c = arg.charAt(i);
-            if(c == '\\' && mode == ""){
+            if(c == '\\'){
                 toProcess += c;
                 i += 1;
                 toProcess += arg.charAt(i);
@@ -140,7 +140,7 @@ public class Main {
                 if (numOfDouble == 1) {
                     mode = "double";
                     if (toProcess != "") {
-                        String toAdd = toProcess.replaceAll("\\s+", " ").replace("\\", "");
+                        String toAdd = handleBackslash(toProcess.replaceAll("\\s+", " "));
                         toReturn += toAdd;
                         toReturnList.add(toAdd);
                         toProcess = "";
@@ -150,8 +150,8 @@ public class Main {
                 else{ // numOfDouble == 2
                     mode = "";
                     numOfDouble = 0;
-                    toReturn += toProcess;
-                    toReturnList.add(toProcess);
+                    toReturn += handleBackslash(toProcess);
+                    toReturnList.add(handleBackslash(toProcess));
                     toProcess = "";
                     continue;
                 }
@@ -169,7 +169,7 @@ public class Main {
                 if( numOfSingle == 1){
                     mode = "single";
                     if (toProcess != "") {
-                        String toAdd = toProcess.replaceAll("\\s+", " ").replace("\\", "");
+                        String toAdd = handleBackslash(toProcess.replaceAll("\\s+", " "));
                         toReturn += toAdd;
                         toReturnList.add(toAdd);
                         toProcess = "";
@@ -179,8 +179,8 @@ public class Main {
                 else{ // numOfSingle == 2
                     mode = "";
                     numOfSingle = 0;
-                    toReturn += toProcess;
-                    toReturnList.add(toProcess);
+                    toReturn += handleBackslash(toProcess);
+                    toReturnList.add(handleBackslash(toProcess));
                     toProcess = "";
                     continue;
                 }
@@ -189,12 +189,17 @@ public class Main {
             toProcess += c;
         }
         if (toProcess != "") {
-            toReturn += toProcess.trim().replaceAll("\\s+", " ").replace("\\", "");
-            toReturnList.add(toProcess);
+            toReturn += handleBackslash(toProcess.trim().replaceAll("\\s+", " "));
+            toReturnList.add(handleBackslash(toProcess));
         }
         if (!command) {
             return new String[] {toReturn};
         }
         return toReturnList.toArray(new String[0]);
+    }
+
+    private static String handleBackslash(String text) {
+        return text.replaceAll("\\\\([^\\\\])", "$1") //  Remove \ before any non-\ character
+        .replaceAll("\\\\\\\\", "\\\\"); // Replace \\ with \
     }
 }
