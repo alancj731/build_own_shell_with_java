@@ -124,8 +124,46 @@ public class Main {
                 toProcess = addCurrentToProcess(toProcess, arg.charAt(i), mode);
                 continue;
             }
+            if (c == '\'') {
+                numOfSingle++;
+                if (mode != "") {
+                    toProcess += c;
+                    if (numOfSingle == 1){
+                        mode = "single";
+                    }
+                    else{
+                        numOfSingle = 0; //reset from 2 to 0
+                        if (numOfDouble == 1){
+                            mode = "double";
+                        }
+                        else{
+                            mode = "";
+                        }
+                    }
+                    continue;
+                }
+                if (numOfSingle == 1) {
+                    mode = "single";
+                    if (toProcess != "") {
+                        // String toAdd = handleBackslash(toProcess.replaceAll("\\s+", " "));
+                        toReturn += toProcess;
+                        toReturnList.add(toProcess);
+                        toProcess = "";
+                    }
+                    continue;
+                } else { // numOfSingle == 2
+                    mode = "";
+                    numOfSingle = 0;
+                    // toReturn += handleBackslash(toProcess);
+                    // toReturnList.add(handleBackslash(toProcess));
+                    toReturn += toProcess;
+                    toReturnList.add(toProcess);
+                    toProcess = "";
+                    continue;
+                }
+            }
             if (c == '\"') {
-                if (mode == "single") {
+                if (mode == "single" && numOfDouble == 0) {
                     toProcess += c;
                     continue;
                 }
@@ -150,32 +188,7 @@ public class Main {
                     continue;
                 }
             }
-            if (c == '\'') {
-                if (mode == "double") {
-                    toProcess += c;
-                    continue;
-                }
-                numOfSingle++;
-                if (numOfSingle == 1) {
-                    mode = "single";
-                    if (toProcess != "") {
-                        // String toAdd = handleBackslash(toProcess.replaceAll("\\s+", " "));
-                        toReturn += toProcess;
-                        toReturnList.add(toProcess);
-                        toProcess = "";
-                    }
-                    continue;
-                } else { // numOfSingle == 2
-                    mode = "";
-                    numOfSingle = 0;
-                    // toReturn += handleBackslash(toProcess);
-                    // toReturnList.add(handleBackslash(toProcess));
-                    toReturn += toProcess;
-                    toReturnList.add(toProcess);
-                    toProcess = "";
-                    continue;
-                }
-            }
+            
 
             toProcess = addCurrentToProcess(toProcess, c, mode);
         }
