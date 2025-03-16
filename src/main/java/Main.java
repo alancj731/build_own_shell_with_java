@@ -120,10 +120,15 @@ public class Main {
         String command = "";
         String arg = "";
         if (start.equals("'") || start.equals("\"")) {
-            String[] total = formatArg(input, true);
-            command = total[0].trim();
-            // arg = String.join(" ", Arrays.copyOfRange(total, 1, total.length));
-            arg = input.split(command)[1].substring(1, input.split(command)[1].length());
+            for (int i = 1; i < input.length(); i++) {
+                if (input.charAt(i) == start.charAt(0)) {
+                    command = formatArg(input.substring(1, i))[0];
+                    arg = input.substring(i + 1);
+                    break;
+                }
+            }
+            // System.out.println("Command: " + command);
+            // System.out.println("Arg: " + arg);
         }
         else{
             String[] parts = input.split(" ", 2);
