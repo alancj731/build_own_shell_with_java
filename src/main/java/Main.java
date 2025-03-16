@@ -75,7 +75,6 @@ public class Main {
 
 
                         String[] result = formatArg(arg,true);
-                        System.out.println("result:" + result);
 
                         List<String> argsList = Arrays.asList(result);
                         // Remove quotes and backslashes
