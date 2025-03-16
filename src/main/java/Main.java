@@ -107,7 +107,7 @@ public class Main {
 
             System.out.println("path in PATH:"  +   path);
 
-            if (path.contains("quz")) {
+            if (path.contains("tmp")) {
                 File directory = new File(path);
                 System.out.println("Directory: " + directory);
                 if (directory.isDirectory()) {
