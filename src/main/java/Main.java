@@ -132,6 +132,10 @@ public class Main {
                 continue;
             }
             if ( c == '\"') {
+                if (mode == "single") {
+                    toProcess += c;
+                    continue;
+                }
                 numOfDouble++;
                 if (numOfDouble == 1) {
                     mode = "double";
@@ -153,6 +157,10 @@ public class Main {
                 }
             }
             if (c == '\'') {
+                if (mode == "double") {
+                    toProcess += c;
+                    continue;
+                }
                 if( mode == "double"){
                     toProcess += c;
                     continue;
