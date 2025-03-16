@@ -38,7 +38,7 @@ public class Main {
                 }
                 String foundPath = checkInPATH(arg);
                 if (foundPath != "") {
-                    System.out.println(arg + " is " + foundPath.split(":")[0] + "/" + arg);
+                    System.out.println(arg + " is " + foundPath.split(":")[0] + arg);
                     break;
                 }
                 System.out.println(arg + ": not found");
