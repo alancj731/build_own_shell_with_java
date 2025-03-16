@@ -125,12 +125,18 @@ public class Main {
         String mode = "";
         for (int i = 0; i < arg.length(); i++) {
             char c = arg.charAt(i);
+            if(c == '\\' && mode == ""){
+                toProcess += c;
+                i += 1;
+                toProcess += arg.charAt(i);
+                continue;
+            }
             if ( c == '\"') {
                 numOfDouble++;
                 if (numOfDouble == 1) {
                     mode = "double";
                     if (toProcess != "") {
-                        String toAdd = toProcess.replaceAll("\\s+", " ");
+                        String toAdd = toProcess.replaceAll("\\s+", " ").replaceAll("\\", "");
                         toReturn += toAdd;
                         toReturnList.add(toAdd);
                         toProcess = "";
@@ -155,7 +161,7 @@ public class Main {
                 if( numOfSingle == 1){
                     mode = "single";
                     if (toProcess != "") {
-                        String toAdd = toProcess.replaceAll("\\s+", " ");
+                        String toAdd = toProcess.replaceAll("\\s+", " ").replaceAll("\\", "");
                         toReturn += toAdd;
                         toReturnList.add(toAdd);
                         toProcess = "";
@@ -175,7 +181,7 @@ public class Main {
             toProcess += c;
         }
         if (toProcess != "") {
-            toReturn += toProcess.trim().replaceAll("\\s+", " ");
+            toReturn += toProcess.trim().replaceAll("\\s+", " ").replace("\\", "");
             toReturnList.add(toProcess);
         }
         if (!command) {
