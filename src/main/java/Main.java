@@ -103,6 +103,9 @@ public class Main {
         System.out.println("check in path touched");
         String[] paths = System.getenv("PATH").split(":");
         for (String path : paths) {
+            if (!path.endsWith("/")) {
+                path += "/";
+            }
             File file = new File(path + arg );
             System.out.println("File path: " + file.getPath());
             if (file.exists() && file.isFile()) {
