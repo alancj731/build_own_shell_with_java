@@ -139,6 +139,7 @@ public class Main {
                 }
                 else{ // numOfDouble == 2
                     mode = "";
+                    numOfDouble = 0;
                     toReturn += toProcess;
                     toReturnList.add(toProcess);
                     toProcess = "";
@@ -163,6 +164,7 @@ public class Main {
                 }
                 else{ // numOfSingle == 2
                     mode = "";
+                    numOfSingle = 0;
                     toReturn += toProcess;
                     toReturnList.add(toProcess);
                     toProcess = "";
