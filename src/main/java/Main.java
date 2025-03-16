@@ -1,5 +1,4 @@
 import java.util.Scanner;
-import java.util.stream.Collectors;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -25,17 +24,22 @@ public class Main {
         }
     }
 
-    private static void handleRedirect(String content, String redirect) {
+    private static void handleRedirect(String content, String redirect){
+        handleRedirect(content, redirect, false);
+    }
+
+    private static void handleRedirect(String content, String redirect, boolean newLine) {
         if (redirect.equals("")) {
             System.out.print(content);
-            return;
         } else {
             try (FileWriter writer = new FileWriter(redirect)) {
                 writer.write(content);
             } catch (IOException e) {
                 System.err.println("Error saving content to file: " + e.getMessage());
             }
-            return;
+        }
+        if (newLine) {
+            System.out.println();
         }
     }
 
@@ -47,7 +51,7 @@ public class Main {
                 break;
             case "echo":
                 String formatedArg = formatArg(arg)[0];
-                handleRedirect(formatedArg, redirect);
+                handleRedirect(formatedArg, redirect, true);
                 break;
             case "type":
                 if (Arrays.asList(VALID_TYPES).contains(arg)) {
