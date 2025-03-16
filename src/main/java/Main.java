@@ -103,7 +103,8 @@ public class Main {
         System.out.println("check in path touched");
         String[] paths = System.getenv("PATH").split(":");
         for (String path : paths) {
-            File file = new File(path + "/'" + arg + "'");
+            File file = new File(path + arg );
+            System.out.println("File path: " + file.getPath());
             if (file.exists() && file.isFile()) {
                 System.out.println("Found " + arg + " in " + path);
                 if (file.canExecute()) {
