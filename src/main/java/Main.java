@@ -102,16 +102,8 @@ public class Main {
 
                         List<String> argsList = Arrays.asList(result);
 
-                        // Remove quotes
-                        // List<String> argsList = Arrays.stream(result)
-                        // .map(s -> s.replace("'", ""))
-                        // .collect(Collectors.toList());
-
-                        // if(input.startsWith("cat \"")){
-                        // System.out.print(argsList);
-                        // }
-
                         commandArgs.addAll(argsList);
+                        
 
                         Process process = new ProcessBuilder(commandArgs).start();
                         String output = new String(process.getInputStream().readAllBytes());
@@ -224,9 +216,13 @@ public class Main {
                             toProcess = addCurrentToProcess(toProcess, c, mode);
                             break;
                     }
-                    if (c != ' ' && toProcess.length() > 0 && toProcess.charAt(toProcess.length() - 1) == ' ') {
-                        toReturn += toProcess;
-                        toReturnList.add(toProcess);
+
+                    if (c == ' ' && (toProcess.trim().length() > 0)) {
+                        toReturn += toProcess.trim();
+                        toReturnList.add(toProcess.trim());
+                        // System.out.println(c);
+                        // System.out.println(toProcess);
+                        // System.out.println(toReturnList);
                         toProcess = "";
                     }
                     break;
@@ -276,94 +272,6 @@ public class Main {
                     }
                     break;
             }
-
-            // if (c == '\\' && mode != "single") {
-            // i += 1;
-            // toProcess = addCurrentToProcess(toProcess, arg.charAt(i), mode);
-            // continue;
-            // }
-            // if (c == '\'') {
-            // numOfSingle++;
-            // if( mode == ""){
-            // mode = "single";
-            // continue;
-            // }
-            // else if (mode == "single") {
-            // mode = numOfDouble > 0 ? "double" : "";
-            // continue;
-            // }
-            // else{
-            // // double quote before this single quote
-            // toProcess += c;
-
-            // }
-            // if (mode != "") {
-            // if (numOfDouble > 0) {
-            // // there is a double quote before this single quote
-            // toProcess += c;
-            // }
-
-            // if (numOfSingle == 1) {
-            // mode = "single";
-            // private static String handleBackslash(String text) {
-            // return text.replaceAll("\\\\([^\\\\])", "$1") // Remove \ before any non-\
-            // character
-            // .replaceAll("\\\\\\\\", "\\\\"); // Replace \\ with \
-            // }
-            // mode = "";
-            // }
-            // }
-            // continue;
-            // }
-            // // mode = "";
-            // if (numOfSingle == 1) {
-            // mode = "single";
-            // // if (toProcess != "") {
-            // // String toAdd = handleBackslash(toProcess.replaceAll("\\s+", " "));
-            // // toReturn += toProcess;
-            // // toReturnList.add(toProcess);
-            // // toProcess = "";
-            // // }
-            // continue;
-            // } else { // numOfSingle == 2
-            // mode = "";
-            // numOfSingle = 0;
-            // // toReturn += handleBackslash(toProcess);
-            // // toReturnList.add(handleBackslash(toProcess));
-            // // toReturn += toProcess;
-            // // toReturnList.add(toProcess);
-            // // toProcess = "";
-            // continue;
-            // }
-            // }
-            // if (c == '\"') {
-            // if (mode == "single" && numOfDouble == 0) {
-            // toProcess += c;
-            // continue;
-            // }
-            // numOfDouble++;
-            // if (numOfDouble == 1) {
-            // mode = "double";
-            // if (toProcess != "") {
-            // // String toAdd = handleBackslash(toProcess.replaceAll("\\s+", " "));
-            // toReturn += toProcess;
-            // toReturnList.add(toProcess);
-            // toProcess = "";
-            // }
-            // continue;
-            // } else { // numOfDouble == 2
-            // mode = "";
-            // numOfDouble = 0;
-            // // toReturn += handleBackslash(toProcess);
-            // // toReturnList.add(handleBackslash(toProcess));
-            // toReturn += toProcess;
-            // toReturnList.add(toProcess);
-            // toProcess = "";
-            // continue;
-            // }
-            // }
-
-            // toProcess = addCurrentToProcess(toProcess, c, mode);
         }
         if (toProcess != "") {
             // toReturn += handleBackslash(toProcess.trim().replaceAll("\\s+", " "));
