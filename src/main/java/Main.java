@@ -8,7 +8,7 @@ import java.util.List;
 public class Main {
 
     static String[] VALID_TYPES = { "echo", "type", "exit", "pwd", "cd" };
-    static char[] ESCAPE_CHARS = { '\'', '\\', '$', 'n' };
+    static char[] ESCAPE_CHARS = { '\"', '\'', '\\', '$', 'n' };
 
     public static void main(String[] args) throws Exception {
         while (true) {
