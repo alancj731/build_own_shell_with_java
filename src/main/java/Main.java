@@ -95,7 +95,7 @@ public class Main {
                         break;
                     }
                 }
-                System.out.println(input + ": command not found");
+                System.out.println(command + ": command not found");
         }
     }
 
@@ -104,7 +104,9 @@ public class Main {
         for (String path : paths) {
             File file = new File(path + "/" + arg);
             if (file.exists() && file.isFile()) {
+                System.out.println("Found " + arg + " in " + path);
                 if (file.canExecute()) {
+                    System.out.println("can execute");
                     return path + ":executable";
                 } else {
                     return path + ":non_executable";
@@ -127,8 +129,8 @@ public class Main {
                     break;
                 }
             }
-            System.out.println("Command: " + command);
-            System.out.println("Arg: " + arg);
+            // System.out.println("Command: " + command);
+            // System.out.println("Arg: " + arg);
         }
         else{
             String[] parts = input.split(" ", 2);
