@@ -125,17 +125,17 @@ public class Main {
         return formatArg(arg, false);
     }
 
-    private static boolean needEscape(String text, int curIndex) {
+    private static String needEscape(String text, int curIndex) {
         if (curIndex >= text.length() - 1) {
-            return false;
+            return "";
         }
         char nextChar = text.charAt(curIndex + 1);
         for (char c : ESCAPE_CHARS) {
             if (c == nextChar) {
-                return true;
+                return String.valueOf(c);
             }
         }
-        return false;
+        return "";
     }
 
     private static String[] formatArg(String arg, boolean command) {
@@ -202,8 +202,8 @@ public class Main {
                             break;
                         }
                         case '\\': {
-                            if (needEscape(arg, i)) {
-                                toProcess = addCurrentToProcess(toProcess, c, mode);
+                            String toEscape = needEscape(arg, i);
+                            if ( toEscape != "") {
                                 i += 1;
                                 c = arg.charAt(i);
                                 toProcess = addCurrentToProcess(toProcess, c, mode);
