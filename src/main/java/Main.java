@@ -55,21 +55,19 @@ public class Main {
                 System.err.println("Error saving content to file: " + e.getMessage());
             }
         }
-        if (!err.equals("")) {
-            if (errRedirect.equals("")) {
-                System.err.print(err);
+        if (errRedirect.equals("")) {
+            System.err.print(err);
+            if (newLine) {
+                System.err.println();
+            }
+        } else {
+            try (FileWriter writer = new FileWriter(errRedirect)) {
+                writer.write(err);
                 if (newLine) {
-                    System.err.println();
+                    writer.write("\n");
                 }
-            } else {
-                try (FileWriter writer = new FileWriter(errRedirect)) {
-                    writer.write(err);
-                    if (newLine) {
-                        writer.write("\n");
-                    }
-                } catch (IOException e) {
-                    System.err.println("Error saving content to file: " + e.getMessage());
-                }
+            } catch (IOException e) {
+                System.err.println("Error saving content to file: " + e.getMessage());
             }
         }
 
