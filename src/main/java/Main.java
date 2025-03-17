@@ -30,8 +30,12 @@ public class Main {
         }
     }
 
-    private static void handleRedirect(String content, String redirect, String error, String errRedirect) {
-        handleRedirect(content, redirect, error, errRedirect, false);
+    private static void handleRedirect(String content, String redirect) {
+        handleRedirect(content, redirect, "", "", false);
+    }
+
+    private static void handleRedirect(String content, String redirect, boolean newLine) {
+        handleRedirect(content, redirect, "", "", newLine);
     }
 
     private static void handleRedirect(String content, String redirect, String err, String errRedirect,
@@ -51,21 +55,19 @@ public class Main {
                 System.err.println("Error saving content to file: " + e.getMessage());
             }
         }
-        if (!err.equals("")) {
-            if (errRedirect.equals("")) {
+      
+        if (errRedirect.equals("")) {
+            if(err.length() > 0){
                 System.err.print(err);
                 if (newLine) {
                     System.err.println();
                 }
-            } else {
-                try (FileWriter writer = new FileWriter(errRedirect)) {
-                    writer.write(err);
-                    if (newLine) {
-                        writer.write("\n");
-                    }
-                } catch (IOException e) {
-                    System.err.println("Error saving content to file: " + e.getMessage());
-                }
+            }
+        } else {
+            try (FileWriter writer = new FileWriter(errRedirect)) {
+                writer.write(err);
+            } catch (IOException e) {
+                System.err.println("Error saving content to file: " + e.getMessage());
             }
         }
 
@@ -82,7 +84,7 @@ public class Main {
                 // System.out.println("formatedArg:"+formatedArg);
                 // System.out.println("redirect:"+redirect);
 
-                handleRedirect(formatedArg, redirect, errRedirect, true);
+                handleRedirect(formatedArg, redirect, "", errRedirect,true);
                 break;
             case "type":
                 if (Arrays.asList(VALID_TYPES).contains(arg)) {
@@ -142,10 +144,7 @@ public class Main {
                         Process process = new ProcessBuilder(commandArgs).start();
                         String output = new String(process.getInputStream().readAllBytes());
                         String error = new String(process.getErrorStream().readAllBytes());
-                        if (error.trim().length() > 0) {
-                            System.err.print(error);
-                        }
-                        handleRedirect(output, redirect);
+                        handleRedirect(output, redirect, error, errRedirect, false);
                         break;
                     }
                 }
