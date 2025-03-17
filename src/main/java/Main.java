@@ -119,7 +119,7 @@ public class Main {
                         String output = new String(process.getInputStream().readAllBytes());
                         String error = new String(process.getErrorStream().readAllBytes());
                         if(error.trim().length() > 0) {
-                            System.err.println(error);
+                            System.err.print(error);
                         }
                         handleRedirect(output, redirect);
                         break;
