@@ -76,7 +76,7 @@ public class Main {
                 handleRedirect(arg + ": not found", redirect);
                 break;
             case "pwd":
-                System.out.println(System.getProperty("user.dir"));
+                // System.out.println(System.getProperty("user.dir"));
                 handleRedirect(System.getProperty("user.dir"), redirect, true);
                 break;
             case "cd":
