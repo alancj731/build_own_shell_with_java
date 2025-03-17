@@ -42,19 +42,20 @@ public class Main {
             boolean newLine) {
         if (redirect.equals("")) {
             System.out.print(content);
+            if (newLine) {
+                System.out.println();
+            }
         } else {
             try (FileWriter writer = new FileWriter(redirect)) {
                 writer.write(content);
-                if (newLine) {
-                    writer.write("\n");
-                }
+                // if (newLine) {
+                //     writer.write("\n");
+                // }
             } catch (IOException e) {
                 System.err.println("Error saving content to file: " + e.getMessage());
             }
         }
-        if (newLine) {
-            System.out.println();
-        }
+      
         if (errRedirect.equals("")) {
             System.err.print(err);
             if (newLine) {
@@ -81,7 +82,7 @@ public class Main {
                 // System.out.println("formatedArg:"+formatedArg);
                 // System.out.println("redirect:"+redirect);
 
-                handleRedirect(formatedArg, redirect, "", errRedirect,true);
+                handleRedirect(formatedArg, redirect, "", errRedirect,false);
                 break;
             case "type":
                 if (Arrays.asList(VALID_TYPES).contains(arg)) {
