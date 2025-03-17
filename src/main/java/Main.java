@@ -228,21 +228,17 @@ public class Main {
                             break;
                         default:
                             // toProcess = addCurrentToProcess(toProcess, c, mode);
+                            // System.out.println("toProcess: " + toProcess);
                             escape = false;
                             break;
                     }
-
+                    if (c == '\'' && c == '\"') {
+                        break;
+                    } 
                     if (c != ' ' && (toProcess.length() > 0 && toProcess.charAt(toProcess.length() - 1) == ' ')) {
-                        if ( c != '\'' && c != '\"'){
-                            toReturn += toProcess;
-                            toReturnList.add(toProcess);
-                            toProcess = c + "";
-                        }
-                        else{
-                            toReturn += toProcess + c;
-                            toReturnList.add(toProcess + c);
-                            toProcess = "";
-                        }
+                        toReturn += toProcess;
+                        toReturnList.add(toProcess);
+                        toProcess = c + "";
                     }
                     else{
                         toProcess = addCurrentToProcess(toProcess, c, mode, escape);
