@@ -30,7 +30,10 @@ public class Main {
             commander.set(parser.Command, parser.args, parser.argsStr);
             commander.run();
             if (commander.output != "") {
-                System.out.println(commander.output);
+                System.out.print(commander.output);
+            }
+            if (commander.error != "") {
+                System.err.print(commander.error);
             }
             // String[] parts = parseInput(input);
             // String command = parts[0].trim();

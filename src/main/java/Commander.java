@@ -1,7 +1,8 @@
 import java.util.Arrays;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Commander {
     public String command;
@@ -73,7 +74,7 @@ public class Commander {
                 this.output = this.argsStr;
                 break;
             case "pwd":
-                this.output = System.getProperty("user.dir");
+                this.output = System.getProperty("user.dir") + "\n";
                 break;
             case "type":
                 if (Arrays.asList(VALID_TYPES).contains(this.argsStr)) {
@@ -98,10 +99,10 @@ public class Commander {
                 } else if (this.argsStr.startsWith(".")) {
                     target = System.getProperty("user.dir") + this.argsStr.substring(1);
                 }
-                try{
+                try {
                     File targetFile = new File(target);
                     File absoluteTargetFile = targetFile.getCanonicalFile();
-                    
+
                     if (absoluteTargetFile.exists() && absoluteTargetFile.isDirectory()) {
                         System.setProperty("user.dir", absoluteTargetFile.getPath());
                         break;
@@ -112,7 +113,30 @@ public class Commander {
                 }
                 break;
             default:
-                // run command here
+                // run command
+                String execPath = searchPath(this.command);
+                if (execPath == "") {
+                    this.output = this.command + ": command not found";
+                    break;
+                }
+
+                String[] parts = execPath.split(":");
+                if (parts[1].equals("executable")) {
+                    List<String> commandArgs = new ArrayList<>();
+                    List<String> argsList = Arrays.asList(this.args);
+                    commandArgs.add(this.command);
+                    commandArgs.addAll(argsList);
+
+                    try {
+                        Process process = new ProcessBuilder(commandArgs).start();
+                        this.output = new String(process.getInputStream().readAllBytes());
+                        this.error = new String(process.getErrorStream().readAllBytes());
+                    } catch (IOException e) {
+                        this.error = "Error executing command: " + e.getMessage();
+                    }
+                    break;
+                }
+
                 break;
         }
         return this.output;
