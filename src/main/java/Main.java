@@ -77,7 +77,7 @@ public class Main {
                 break;
             case "pwd":
                 System.out.println(System.getProperty("user.dir"));
-                handleRedirect(System.getProperty("user.dir"), redirect);
+                handleRedirect(System.getProperty("user.dir"), redirect, true);
                 break;
             case "cd":
                 if (arg.startsWith("~")) {
