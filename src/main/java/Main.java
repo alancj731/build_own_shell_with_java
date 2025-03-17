@@ -245,7 +245,7 @@ public class Main {
                     else{
                         toProcess = addCurrentToProcess(toProcess, c, mode, escape);
                     }
-                    System.out.println("toProcess: " + toProcess);
+                    // System.out.println("toProcess: " + toProcess);
                     break;
                 case "single":
                     switch (c) {
