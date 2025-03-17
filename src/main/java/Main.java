@@ -233,7 +233,7 @@ public class Main {
                             escape = false;
                             break;
                     }
-                    if (c == '\'' || c == '\"') {
+                    if (!escape && (c == '\'' || c == '\"')) {
                         // System.out.println("touch here 236");
                         break;
                     } 
