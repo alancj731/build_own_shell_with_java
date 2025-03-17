@@ -146,10 +146,7 @@ public class Main {
                         Process process = new ProcessBuilder(commandArgs).start();
                         String output = new String(process.getInputStream().readAllBytes());
                         String error = new String(process.getErrorStream().readAllBytes());
-                        if (error.trim().length() > 0) {
-                            System.err.print(error);
-                        }
-                        handleRedirect(output, redirect);
+                        handleRedirect(output, redirect, error, errRedirect, false);
                         break;
                     }
                 }
