@@ -203,11 +203,13 @@ public class Main {
         String toReturn = "";
         List<String> toReturnList = new ArrayList<>();
         String toProcess = "";
+        boolean escape = false;
         // int numOfSingle = 0;
         // int numOfDouble = 0;
         String mode = "";
         for (int i = 0; i < arg.length(); i++) {
             char c = arg.charAt(i);
+            escape = false;
 
             switch (mode) {
                 case "":
@@ -221,20 +223,22 @@ public class Main {
                         case '\\':
                             i += 1;
                             c = arg.charAt(i);
-                            toProcess = addCurrentToProcess(toProcess, c, mode, true);
+                            // toProcess = addCurrentToProcess(toProcess, c, mode, true);
+                            escape = true;
                             break;
                         default:
-                            toProcess = addCurrentToProcess(toProcess, c, mode);
+                            // toProcess = addCurrentToProcess(toProcess, c, mode);
+                            escape = false;
                             break;
                     }
 
-                    if (c == ' ' && (toProcess.trim().length() > 0)) {
+                    if (c != ' ' && (toProcess.length() > 0 && toProcess.charAt(toProcess.length() - 1) == ' ')) {
                         toReturn += toProcess;
                         toReturnList.add(toProcess);
-                        // System.out.println(c);
-                        // System.out.println(toProcess);
-                        // System.out.println(toReturnList);
-                        toProcess = "";
+                        toProcess = c + "";
+                    }
+                    else{
+                        toProcess = addCurrentToProcess(toProcess, c, mode, escape);
                     }
                     break;
                 case "single":
@@ -305,7 +309,7 @@ public class Main {
         }
 
         if (mode == "") {
-            if (c == ' ' && text.length() > 0 && text.charAt(text.length() - 1) == c) {
+            if (c == ' ' && text.length() > 0 && text.charAt(text.length() - 1) == ' ') {
                 return text;
             } else {
                 return text + c;
