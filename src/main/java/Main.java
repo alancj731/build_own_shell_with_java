@@ -229,8 +229,8 @@ public class Main {
                     }
 
                     if (c == ' ' && (toProcess.trim().length() > 0)) {
-                        toReturn += toProcess.trim();
-                        toReturnList.add(toProcess.trim());
+                        toReturn += toProcess;
+                        toReturnList.add(toProcess);
                         // System.out.println(c);
                         // System.out.println(toProcess);
                         // System.out.println(toReturnList);
