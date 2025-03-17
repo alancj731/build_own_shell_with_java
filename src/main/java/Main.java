@@ -48,9 +48,9 @@ public class Main {
         } else {
             try (FileWriter writer = new FileWriter(redirect)) {
                 writer.write(content);
-                // if (newLine) {
-                //     writer.write("\n");
-                // }
+                if (newLine) {
+                    writer.write("\n");
+                }
             } catch (IOException e) {
                 System.err.println("Error saving content to file: " + e.getMessage());
             }
