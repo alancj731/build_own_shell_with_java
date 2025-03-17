@@ -30,8 +30,12 @@ public class Main {
         }
     }
 
-    private static void handleRedirect(String content, String redirect, String error, String errRedirect) {
-        handleRedirect(content, redirect, error, errRedirect, false);
+    private static void handleRedirect(String content, String redirect) {
+        handleRedirect(content, redirect, "", "", false);
+    }
+
+    private static void handleRedirect(String content, String redirect, boolean newLine) {
+        handleRedirect(content, redirect, "", "", newLine);
     }
 
     private static void handleRedirect(String content, String redirect, String err, String errRedirect,
@@ -82,7 +86,7 @@ public class Main {
                 // System.out.println("formatedArg:"+formatedArg);
                 // System.out.println("redirect:"+redirect);
 
-                handleRedirect(formatedArg, redirect, errRedirect, true);
+                handleRedirect(formatedArg, redirect, true);
                 break;
             case "type":
                 if (Arrays.asList(VALID_TYPES).contains(arg)) {
