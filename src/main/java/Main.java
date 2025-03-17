@@ -1,4 +1,6 @@
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -20,15 +22,20 @@ public class Main {
             String command = parts[0].trim();
             String arg = parts[1].trim();
             String redirect = parts[2].trim();
-            handleCommand(command, arg, redirect, input, scanner);
+            String errRedirect = parts[3].trim();
+
+            // System.out.println("outRedirect: " + redirect);
+            // System.out.println("errRedirect: " + errRedirect);
+            handleCommand(command, arg, redirect, errRedirect);
         }
     }
 
-    private static void handleRedirect(String content, String redirect){
-        handleRedirect(content, redirect, false);
+    private static void handleRedirect(String content, String redirect, String error, String errRedirect) {
+        handleRedirect(content, redirect, error, errRedirect, false);
     }
 
-    private static void handleRedirect(String content, String redirect, boolean newLine) {
+    private static void handleRedirect(String content, String redirect, String err, String errRedirect,
+            boolean newLine) {
         if (redirect.equals("")) {
             System.out.print(content);
             if (newLine) {
@@ -37,17 +44,34 @@ public class Main {
         } else {
             try (FileWriter writer = new FileWriter(redirect)) {
                 writer.write(content);
-                if(newLine){
+                if (newLine) {
                     writer.write("\n");
                 }
             } catch (IOException e) {
                 System.err.println("Error saving content to file: " + e.getMessage());
             }
         }
-        
+        if (!err.equals("")) {
+            if (errRedirect.equals("")) {
+                System.err.print(err);
+                if (newLine) {
+                    System.err.println();
+                }
+            } else {
+                try (FileWriter writer = new FileWriter(errRedirect)) {
+                    writer.write(err);
+                    if (newLine) {
+                        writer.write("\n");
+                    }
+                } catch (IOException e) {
+                    System.err.println("Error saving content to file: " + e.getMessage());
+                }
+            }
+        }
+
     }
 
-    public static void handleCommand(String command, String arg, String redirect, String input, Scanner scanner)
+    public static void handleCommand(String command, String arg, String redirect, String errRedirect)
             throws Exception {
         switch (command) {
             case "exit":
@@ -57,8 +81,8 @@ public class Main {
                 String formatedArg = formatArg(arg)[0];
                 // System.out.println("formatedArg:"+formatedArg);
                 // System.out.println("redirect:"+redirect);
-                
-                handleRedirect(formatedArg, redirect, true);
+
+                handleRedirect(formatedArg, redirect, errRedirect, true);
                 break;
             case "type":
                 if (Arrays.asList(VALID_TYPES).contains(arg)) {
@@ -114,11 +138,11 @@ public class Main {
                         List<String> argsList = Arrays.asList(result);
 
                         commandArgs.addAll(argsList);
-                        
+
                         Process process = new ProcessBuilder(commandArgs).start();
                         String output = new String(process.getInputStream().readAllBytes());
                         String error = new String(process.getErrorStream().readAllBytes());
-                        if(error.trim().length() > 0) {
+                        if (error.trim().length() > 0) {
                             System.err.print(error);
                         }
                         handleRedirect(output, redirect);
@@ -164,8 +188,7 @@ public class Main {
                     break;
                 }
             }
-            // System.out.println("Command: " + command);
-            // System.out.println("Arg: " + arg);
+
         } else {
             String[] parts = input.split(" ", 2);
             command = parts.length > 0 ? parts[0] : "";
@@ -173,14 +196,39 @@ public class Main {
         }
 
         String[] parts = new String[] { rest, "" };
-        ;
-        if (input.contains("1>")) {
-            parts = rest.split("1>", 2);
-        } else if (input.contains(">")) {
-            parts = rest.split(">", 2);
+        String regex = "(\\d?>|\\s>)\\s*\\S+";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(rest);
+
+        String errRedirect = "";
+        String outRedirect = "";
+
+        while (matcher.find()) {
+            String match = matcher.group();
+            if (match.contains("2>")) {
+                parts = match.split("2>", 2);
+                errRedirect = parts[1].trim();
+            } else if (match.contains("1>")) {
+                parts = match.split("1>", 2);
+                outRedirect = parts[1].trim();
+            } else if (match.contains(">")) {
+                parts = match.split(">", 2);
+                outRedirect = parts[1].trim();
+            }
         }
 
-        return new String[] { command, parts[0], parts[1] };
+        parts = rest.split("(2>|1>|>)");
+
+        String arg = parts[0].trim();
+
+        // if (input.contains("2>"))
+        // if (input.contains("1>")) {
+        // parts = rest.split("1>", 2);
+        // } else if (input.contains(">")) {
+        // parts = rest.split(">", 2);
+        // }
+
+        return new String[] { command, arg, outRedirect, errRedirect };
     }
 
     private static String[] formatArg(String arg) {
@@ -238,13 +286,12 @@ public class Main {
                     if (!escape && (c == '\'' || c == '\"')) {
                         // System.out.println("touch here 236");
                         break;
-                    } 
+                    }
                     if (c != ' ' && (toProcess.length() > 0 && toProcess.charAt(toProcess.length() - 1) == ' ')) {
                         toReturn += toProcess;
                         toReturnList.add(toProcess);
                         toProcess = c + "";
-                    }
-                    else{
+                    } else {
                         toProcess = addCurrentToProcess(toProcess, c, mode, escape);
                     }
                     // System.out.println("toProcess: " + toProcess);
