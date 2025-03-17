@@ -69,11 +69,11 @@ public class Main {
                 String foundPath = checkInPATH(arg);
                 if (foundPath != "") {
                     // System.out.println(arg + " is " + foundPath.split(":")[0] + arg);
-                    handleRedirect(arg + " is " + foundPath.split(":")[0] + arg, redirect);
+                    handleRedirect(arg + " is " + foundPath.split(":")[0] + arg, redirect, true);
                     break;
                 }
                 // System.out.println(arg + ": not found");
-                handleRedirect(arg + ": not found", redirect);
+                handleRedirect(arg + ": not found", redirect, true);
                 break;
             case "pwd":
                 // System.out.println(System.getProperty("user.dir"));
