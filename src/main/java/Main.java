@@ -27,9 +27,11 @@ public class Main {
             Scanner scanner = new Scanner(System.in);
             String input = scanner.nextLine().trim();
             parser.parseInput(input);
-            commander.set(parser.Command, parser.args);
-            String output = commander.run();
-            System.out.println("output: " + output);
+            commander.set(parser.Command, parser.args, parser.argsStr);
+            commander.run();
+            if (commander.output != "") {
+                System.out.println(commander.output);
+            }
             // String[] parts = parseInput(input);
             // String command = parts[0].trim();
             // String arg = parts[1].trim();

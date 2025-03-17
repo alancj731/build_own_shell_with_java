@@ -45,7 +45,6 @@ public class InputParser {
         String[] cmdSeperated = this.seperateCommand();
         this.Command = cmdSeperated[0];
         String rest = cmdSeperated[1];
-        System.out.println("rest: " + rest);
 
         String[] parts = new String[] { rest, "" };
         String regex = "(1>>|2>>|1>(?!>)|2>(?!>)|(?<!1|2|1>|2>)>)\\s*(\\S+)";
@@ -73,7 +72,6 @@ public class InputParser {
 
         this.argsStr =  formatString(parts[0].trim(), false)[0];
         this.args = formatString(parts[0].trim(), true);  
-        
     }
 
     public String[] seperateCommand() {
