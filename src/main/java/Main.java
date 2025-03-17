@@ -51,7 +51,10 @@ public class Main {
                 break;
             case "echo":
                 String formatedArg = formatArg(arg)[0];
-                handleRedirect(formatedArg, redirect, true);
+                System.out.println("formatedArg:"+formatedArg);
+                System.out.println("redirect:"+redirect);
+                
+                handleRedirect(formatedArg, redirect);
                 break;
             case "type":
                 if (Arrays.asList(VALID_TYPES).contains(arg)) {
