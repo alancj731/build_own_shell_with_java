@@ -233,9 +233,16 @@ public class Main {
                     }
 
                     if (c != ' ' && (toProcess.length() > 0 && toProcess.charAt(toProcess.length() - 1) == ' ')) {
-                        toReturn += toProcess;
-                        toReturnList.add(toProcess);
-                        toProcess = c + "";
+                        if ( c != '\'' && c != '\"'){
+                            toReturn += toProcess;
+                            toReturnList.add(toProcess);
+                            toProcess = c + "";
+                        }
+                        else{
+                            toReturn += toProcess + c;
+                            toReturnList.add(toProcess + c);
+                            toProcess = "";
+                        }
                     }
                     else{
                         toProcess = addCurrentToProcess(toProcess, c, mode, escape);
