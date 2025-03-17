@@ -31,16 +31,20 @@ public class Main {
     private static void handleRedirect(String content, String redirect, boolean newLine) {
         if (redirect.equals("")) {
             System.out.print(content);
+            if (newLine) {
+                System.out.println();
+            }
         } else {
             try (FileWriter writer = new FileWriter(redirect)) {
                 writer.write(content);
+                if(newLine){
+                    writer.write("\n");
+                }
             } catch (IOException e) {
                 System.err.println("Error saving content to file: " + e.getMessage());
             }
         }
-        if (newLine) {
-            System.out.println();
-        }
+        
     }
 
     public static void handleCommand(String command, String arg, String redirect, String input, Scanner scanner)
@@ -54,7 +58,7 @@ public class Main {
                 // System.out.println("formatedArg:"+formatedArg);
                 // System.out.println("redirect:"+redirect);
                 
-                handleRedirect(formatedArg, redirect);
+                handleRedirect(formatedArg, redirect, true);
                 break;
             case "type":
                 if (Arrays.asList(VALID_TYPES).contains(arg)) {
