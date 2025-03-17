@@ -1,6 +1,9 @@
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import javax.swing.text.html.HTMLEditorKit.Parser;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -8,25 +11,30 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+
 public class Main {
 
     static String[] VALID_TYPES = { "echo", "type", "exit", "pwd", "cd" };
     static char[] ESCAPE_CHARS = { '\"', '\\' };
 
+   
+
     public static void main(String[] args) throws Exception {
+        InputParser parser = new InputParser();
         while (true) {
             System.out.print("$ ");
             Scanner scanner = new Scanner(System.in);
             String input = scanner.nextLine().trim();
-            String[] parts = parseInput(input);
-            String command = parts[0].trim();
-            String arg = parts[1].trim();
-            String redirect = parts[2].trim();
-            String errRedirect = parts[3].trim();
+            parser.parseInput(input);
+            // String[] parts = parseInput(input);
+            // String command = parts[0].trim();
+            // String arg = parts[1].trim();
+            // String redirect = parts[2].trim();
+            // String errRedirect = parts[3].trim();
 
             // System.out.println("outRedirect: " + redirect);
             // System.out.println("errRedirect: " + errRedirect);
-            handleCommand(command, arg, redirect, errRedirect);
+            // handleCommand(command, arg, redirect, errRedirect);
         }
     }
 
