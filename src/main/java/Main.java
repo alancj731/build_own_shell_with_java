@@ -216,6 +216,7 @@ public class Main {
                     switch (c) {
                         case '\'':
                             mode = "single";
+                            // System.out.println("touch here 219");
                             break;
                         case '\"':
                             mode = "double";
@@ -232,7 +233,8 @@ public class Main {
                             escape = false;
                             break;
                     }
-                    if (c == '\'' && c == '\"') {
+                    if (c == '\'' || c == '\"') {
+                        // System.out.println("touch here 236");
                         break;
                     } 
                     if (c != ' ' && (toProcess.length() > 0 && toProcess.charAt(toProcess.length() - 1) == ' ')) {
@@ -243,6 +245,7 @@ public class Main {
                     else{
                         toProcess = addCurrentToProcess(toProcess, c, mode, escape);
                     }
+                    System.out.println("toProcess: " + toProcess);
                     break;
                 case "single":
                     switch (c) {
