@@ -117,7 +117,8 @@ public class Main {
                         
                         Process process = new ProcessBuilder(commandArgs).start();
                         String output = new String(process.getInputStream().readAllBytes());
-                        // System.out.print(output);
+                        String error = new String(process.getErrorStream().readAllBytes());
+                        System.out.print(error);
                         handleRedirect(output, redirect);
                         break;
                     }
