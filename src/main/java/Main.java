@@ -57,9 +57,11 @@ public class Main {
         }
       
         if (errRedirect.equals("")) {
-            System.err.print(err);
-            if (newLine) {
-                System.err.println();
+            if(err.length() > 0){
+                System.err.print(err);
+                if (newLine) {
+                    System.err.println();
+                }
             }
         } else {
             try (FileWriter writer = new FileWriter(errRedirect)) {
