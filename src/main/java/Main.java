@@ -63,9 +63,6 @@ public class Main {
         } else {
             try (FileWriter writer = new FileWriter(errRedirect)) {
                 writer.write(err);
-                if (newLine) {
-                    writer.write("\n");
-                }
             } catch (IOException e) {
                 System.err.println("Error saving content to file: " + e.getMessage());
             }
