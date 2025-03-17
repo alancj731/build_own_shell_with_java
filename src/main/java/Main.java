@@ -21,11 +21,15 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
         InputParser parser = new InputParser();
+        Commander commander = new Commander();
         while (true) {
             System.out.print("$ ");
             Scanner scanner = new Scanner(System.in);
             String input = scanner.nextLine().trim();
             parser.parseInput(input);
+            commander.set(parser.Command, parser.args);
+            String output = commander.run();
+            System.out.println("output: " + output);
             // String[] parts = parseInput(input);
             // String command = parts[0].trim();
             // String arg = parts[1].trim();
