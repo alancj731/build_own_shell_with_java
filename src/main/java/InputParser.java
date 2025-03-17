@@ -1,14 +1,15 @@
-import java.util.Scanner;
+import java.util.function.Consumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+// import java.util.Scanner;
+// import java.io.File;
+// import java.io.FileWriter;
+// import java.io.IOException;
+// import java.util.Arrays;
 
-public class Parser {
+public class InputParser {
     public String text;
     public String Command = "";
     public String argsStr = "";
@@ -21,15 +22,15 @@ public class Parser {
 
 
     // Constructor
-    public Parser(String input) {
+    public InputParser(String input) {
         this.text = input;
     }
 
-    public Parser() {
+    public InputParser() {
         this.text = "";
     }
 
-    public parseInput(String input){
+    public void parseInput(String input){
         if (input != null) {
             this.text = input.trim();
             if (this.text.length() > 0) {
@@ -44,6 +45,33 @@ public class Parser {
         String[] cmdSeperated = this.seperateCommand();
         this.Command = cmdSeperated[0];
         String rest = cmdSeperated[1];
+
+        String[] parts = new String[] { rest, "" };
+        String regex = "(1>>|2>>|1>(?!>)|2>(?!>)|(?<!1|2|1>|2>)>)\\s*(\\S+)";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(rest);
+
+        while (matcher.find()) {
+            String operator = matcher.group(1).trim();
+            String value = matcher.group(2).trim();
+
+            if (operator.equals("2>>")) {
+                this.errAppend = value;
+            } if (operator.equals("1>>")) {
+                this.outAppend = value;;
+            } else if (operator.equals("2>")) {
+                this.errRedirect = value;
+            } else if (operator.equals("1>")) {
+                this.outRedirect = value;
+            } else if (operator.equals(">")) {
+                this.outRedirect = value;
+            }
+        }
+
+        parts = rest.split("(2>|1>|>)", 2);
+
+        this.argsStr =  formatString(parts[0].trim(), false)[0];
+        this.args = formatString(parts[0].trim(), true);  
     }
 
     public String[] seperateCommand() {
@@ -59,38 +87,36 @@ public class Parser {
             return this.seperateBySpace(this.text);
         }
 
-        String startChar = this.text.substring(0, 1);
-
-        return new String[] { command, rest };
-
+        return this.seperateByQotation(this.text);
     }
 
-    private seperateBySpace(String text) {
-        String[] parts = text.split(" ");
-        command = parts[0].trim();
-        rest = parts.length > 1 ? parts[1].trim() : "";
+    private String [] seperateBySpace(String text) {
+        String[] parts = text.split(" ", 2);
+        String command = parts[0].trim();
+        String rest = parts.length > 1 ? parts[1].trim() : "";
         return new String[] { command, rest };
     }
 
-    private seperateByQotation(String text) {
+    private String[] seperateByQotation(String text) {
         if (text.length() < 2) {
             return new String[] { "", "" };
         }
         char startChar = text.charAt(0);
         for (int i = 1; i < text.length(); i++) {
             if (text.charAt(i) == startChar) {
-                command = formatString(text.substring(0, i+1), false)[0];
-                rest = text.substring(i + 1);
+                String command = formatString(text.substring(0, i+1), false)[0];
+                String rest = text.substring(i + 1);
                 return new String[] { command, rest };
             }
         }
+        return new String[] { "", "" };
     }
 
-    public static String addCurrentToProcess(String text, Char c, String mode){
+    public static String addCurrentToProcess(String text, char c, String mode){
         return addCurrentToProcess(text, c, mode, false);
     }
 
-    public static String addCurrentToProcess(String text, Char c, String mode, boolean escape){
+    public static String addCurrentToProcess(String text, char c, String mode, boolean escape){
         if (escape) {
             return text + c;
         }
@@ -127,7 +153,7 @@ public class Parser {
         String toProcess = "";
         String mode = "";
         
-        Consumer<String> addText = (String toAdd) -> {
+        Consumer <String> addText = (String toAdd) -> {
             if (inArray) {
                 toReturnList.add(toAdd);
             } else {
@@ -137,7 +163,7 @@ public class Parser {
 
         for (int i = 0; i < text.length(); i++) {
             char c = text.charAt(i);
-            escape = false;
+            boolean escape = false;
 
             switch (mode) {
                 case "":
@@ -150,7 +176,7 @@ public class Parser {
                             break;
                         case '\\':
                             i += 1;
-                            c = arg.charAt(i);
+                            c = text.charAt(i);
                             escape = true; // need to escape in  "" mode
                             break;
                         default:
@@ -162,7 +188,10 @@ public class Parser {
                         break;
                     }
                     if (c == '\'' || c == '\"') {
-                        // enter single or double quote mode, no need to add c to toProcess
+                        if (toProcess != "") {
+                            addText.accept(toProcess);
+                            toProcess = "";
+                        }
                         break;
                     }
 
@@ -207,7 +236,7 @@ public class Parser {
                         case '\\': {
                             if (needEscape(text, i)) {
                                 i += 1;
-                                c = arg.charAt(i);
+                                c = text.charAt(i);
                                 toProcess = addCurrentToProcess(toProcess, c, mode);
                             } else {
                                 toProcess = addCurrentToProcess(toProcess, c, mode);
