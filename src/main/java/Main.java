@@ -63,7 +63,7 @@ public class Main {
             case "type":
                 if (Arrays.asList(VALID_TYPES).contains(arg)) {
                     // System.out.println(arg + " is a shell builtin");
-                    handleRedirect(arg + " is a shell builtin", redirect);
+                    handleRedirect(arg + " is a shell builtin", redirect, true);
                     break;
                 }
                 String foundPath = checkInPATH(arg);
