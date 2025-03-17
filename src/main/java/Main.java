@@ -98,7 +98,7 @@ public class Main {
                     break;
                 }
                 // System.out.println("cd: " + arg + ": No such file or directory");
-                handleRedirect("cd: " + arg + ": No such file or directory", redirect);
+                handleRedirect("cd: " + arg + ": No such file or directory", redirect, true);
                 break;
             default:
                 String execPath = checkInPATH(command);
