@@ -51,8 +51,8 @@ public class Main {
                 break;
             case "echo":
                 String formatedArg = formatArg(arg)[0];
-                System.out.println("formatedArg:"+formatedArg);
-                System.out.println("redirect:"+redirect);
+                // System.out.println("formatedArg:"+formatedArg);
+                // System.out.println("redirect:"+redirect);
                 
                 handleRedirect(formatedArg, redirect);
                 break;
