@@ -118,7 +118,7 @@ public class Main {
                         Process process = new ProcessBuilder(commandArgs).start();
                         String output = new String(process.getInputStream().readAllBytes());
                         String error = new String(process.getErrorStream().readAllBytes());
-                        if(error.trim().length() > 0 && redirect.equals("")){ {
+                        if(error.trim().length() > 0 && redirect.equals("")) {
                             System.out.println(error);
                         }
                         handleRedirect(output, redirect);
