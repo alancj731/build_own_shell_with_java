@@ -71,20 +71,20 @@ public class Commander {
                 System.exit(0);
                 break;
             case "echo":
-                this.output = this.argsStr;
+                this.output = this.argsStr + "\n";
                 break;
             case "pwd":
                 this.output = System.getProperty("user.dir") + "\n";
                 break;
             case "type":
                 if (Arrays.asList(VALID_TYPES).contains(this.argsStr)) {
-                    this.output = (this.argsStr + " is a shell builtin");
+                    this.output = (this.argsStr + " is a shell builtin\n");
                 } else {
                     String foundPath = searchPath(this.argsStr);
                     if (foundPath != "") {
                         this.output = (this.argsStr + " is " + foundPath.split(":")[0] + this.argsStr);
                     } else {
-                        this.output = this.argsStr + ": not found";
+                        this.output = this.argsStr + ": not found\n";
                     }
                 }
                 break;
@@ -107,16 +107,16 @@ public class Commander {
                         System.setProperty("user.dir", absoluteTargetFile.getPath());
                         break;
                     }
-                    this.output = "cd: " + this.argsStr + ": No such file or directory";
+                    this.output = "cd: " + this.argsStr + ": No such file or directory\n";
                 } catch (IOException e) {
-                    this.output = "cd: " + this.argsStr + ": No such file or directory";
+                    this.output = "cd: " + this.argsStr + ": No such file or directory\n";
                 }
                 break;
             default:
                 // run command
                 String execPath = searchPath(this.command);
                 if (execPath == "") {
-                    this.output = this.command + ": command not found";
+                    this.output = this.command + ": command not found\n";
                     break;
                 }
 

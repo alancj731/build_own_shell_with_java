@@ -47,7 +47,7 @@ public class InputParser {
         String rest = cmdSeperated[1];
 
         String[] parts = new String[] { rest, "" };
-        String regex = "(1>>|2>>|1>(?!>)|2>(?!>)|(?<!1|2|1>|2>)>)\\s*(\\S+)";
+        String regex = "((?<!1|2>)>>|1>>|2>>|1>(?!>)|2>(?!>)|(?<!1|2|1>|2>|>>)>)\\s*(\\S+)";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(rest);
 
@@ -57,13 +57,11 @@ public class InputParser {
 
             if (operator.equals("2>>")) {
                 this.errAppend = value;
-            } if (operator.equals("1>>")) {
+            } if (operator.equals("1>>") || operator.equals(">>")) {
                 this.outAppend = value;;
             } else if (operator.equals("2>")) {
                 this.errRedirect = value;
-            } else if (operator.equals("1>")) {
-                this.outRedirect = value;
-            } else if (operator.equals(">")) {
+            } else if (operator.equals("1>") || operator.equals(">")) {
                 this.outRedirect = value;
             }
         }
